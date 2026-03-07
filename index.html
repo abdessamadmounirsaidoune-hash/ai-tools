@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>DZStudy | مساعد الطلبة الجزائريين</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DZStudy | منصة الطالب الذكية</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -14,18 +12,19 @@
 body{
 font-family:Arial;
 margin:0;
-background:#f4f6fb;
-text-align:center;
+background:#f3f6fb;
+direction:rtl;
 }
 
 header{
-background:linear-gradient(135deg,#2563eb,#1e3a8a);
+background:linear-gradient(135deg,#2563eb,#1e40af);
 color:white;
 padding:30px;
+text-align:center;
 }
 
 .container{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 padding:20px;
 }
@@ -33,17 +32,21 @@ padding:20px;
 .card{
 background:white;
 padding:25px;
-margin:20px;
+margin:20px 0;
 border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.card h2{
+margin-top:0;
 }
 
 input,textarea{
-width:90%;
+width:95%;
 padding:12px;
-margin:10px;
+margin:10px 0;
 border-radius:8px;
-border:1px solid #ddd;
+border:1px solid #ccc;
 font-size:16px;
 }
 
@@ -51,35 +54,37 @@ button{
 background:#2563eb;
 color:white;
 border:none;
-padding:12px 20px;
-font-size:16px;
+padding:12px 18px;
 border-radius:8px;
 cursor:pointer;
+font-size:15px;
 }
 
 button:hover{
-background:#1e40af;
+background:#1e3a8a;
 }
 
 .icon{
-font-size:25px;
+font-size:24px;
 color:#2563eb;
 margin-bottom:10px;
 }
 
 .result{
-margin-top:15px;
-font-size:17px;
+margin-top:10px;
+background:#f8fafc;
+padding:15px;
+border-radius:8px;
 white-space:pre-line;
 }
 
 footer{
+text-align:center;
 padding:20px;
 color:#777;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -87,7 +92,7 @@ color:#777;
 <header>
 
 <h1>DZStudy</h1>
-<p>مساعد الطلبة الجزائريين في البحوث والواجبات</p>
+<p>منصة الطالب الجزائري للبحوث والواجبات والدراسة</p>
 
 </header>
 
@@ -99,68 +104,68 @@ color:#777;
 
 <div class="icon"><i class="fa-solid fa-lightbulb"></i></div>
 
-<h2>إنشاء فكرة بحث</h2>
+<h2>توليد فكرة بحث</h2>
 
-<input id="topic" placeholder="مثال: الطاقة الشمسية">
+<input id="researchTopic" placeholder="اكتب موضوع البحث">
 
-<br>
+<button onclick="generateResearch()">توليد</button>
 
-<button onclick="generateResearch()">توليد فكرة</button>
-
-<div id="research" class="result"></div>
+<div id="researchResult" class="result"></div>
 
 </div>
 
 
-<!-- تلخيص -->
+<!-- تلخيص النص -->
 
 <div class="card">
 
 <div class="icon"><i class="fa-solid fa-file-lines"></i></div>
 
-<h2>تلخيص النصوص</h2>
+<h2>تلخيص النصوص والبحوث</h2>
 
-<textarea id="text" rows="5" placeholder="ضع النص هنا"></textarea>
+<textarea id="summaryText" rows="5" placeholder="ضع النص هنا"></textarea>
 
-<br>
+<input type="file" id="summaryImage" accept="image/*">
 
-<button onclick="summarize()">تلخيص</button>
+<button onclick="summarizeText()">تلخيص</button>
 
-<div id="summary" class="result"></div>
+<div id="summaryResult" class="result"></div>
 
 </div>
 
 
-<!-- شرح درس -->
+<!-- حل الواجبات -->
 
 <div class="card">
 
 <div class="icon"><i class="fa-solid fa-book"></i></div>
 
-<h2>شرح درس</h2>
+<h2>حل الواجبات والأسئلة</h2>
 
-<input id="lesson" placeholder="مثال: قانون أوم">
+<textarea id="questionText" rows="4" placeholder="اكتب السؤال"></textarea>
 
-<br>
+<input type="file" id="questionImage" accept="image/*">
 
-<button onclick="explain()">شرح</button>
+<button onclick="solveQuestion()">حل السؤال</button>
 
-<div id="explain" class="result"></div>
+<div id="questionResult" class="result"></div>
 
 </div>
 
 
-<!-- رفع صورة -->
+<!-- شرح الدروس -->
 
 <div class="card">
 
-<div class="icon"><i class="fa-solid fa-image"></i></div>
+<div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
 
-<h2>إرسال صورة واجب</h2>
+<h2>شرح درس</h2>
 
-<input type="file" accept="image/*">
+<input id="lessonText" placeholder="اكتب اسم الدرس">
 
-<p>يمكنك إرسال صورة تمرين أو واجب.</p>
+<button onclick="explainLesson()">شرح</button>
+
+<div id="lessonResult" class="result"></div>
 
 </div>
 
@@ -175,10 +180,26 @@ color:#777;
 
 <button onclick="startVoice()">ابدأ التسجيل</button>
 
-<textarea id="voiceText" rows="4" placeholder="سيظهر النص هنا"></textarea>
+<textarea id="voiceResult" rows="3" placeholder="سيظهر النص هنا"></textarea>
 
 </div>
 
+
+<!-- قراءة النص من الصورة -->
+
+<div class="card">
+
+<div class="icon"><i class="fa-solid fa-image"></i></div>
+
+<h2>قراءة النص من صورة</h2>
+
+<input type="file" id="ocrImage" accept="image/*">
+
+<button onclick="readImage()">قراءة النص</button>
+
+<div id="ocrResult" class="result"></div>
+
+</div>
 
 </div>
 
@@ -188,53 +209,53 @@ DZStudy 2026
 
 </footer>
 
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+
 <script>
 
 function generateResearch(){
 
-let topic=document.getElementById("topic").value;
+let topic=document.getElementById("researchTopic").value;
 
-let result=
+let text="مقدمة:\nيعد موضوع "+topic+" من المواضيع المهمة.\n\n"+
+"إشكالية البحث:\nما أهمية "+topic+" وتأثيره؟\n\n"+
+"الأهداف:\n- فهم المفهوم\n- دراسة التأثير\n\n"+
+"الخاتمة:\nيمثل "+topic+" مجالاً مهماً للدراسة.";
 
-"مقدمة:\n"+
-"يعد موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
-"مشكلة البحث:\n"+
-"ما أهمية "+topic+" وتأثيره على المجتمع؟\n\n"+
-"الأهداف:\n"+
-"- فهم مفهوم "+topic+"\n"+
-"- دراسة تأثيره\n"+
-"- اقتراح حلول.\n\n"+
-"الخاتمة:\n"+
-"يمثل "+topic+" مجالا مهما للدراسة.";
-
-document.getElementById("research").innerText=result;
+document.getElementById("researchResult").innerText=text;
 
 }
 
-function summarize(){
+function summarizeText(){
 
-let text=document.getElementById("text").value;
+let text=document.getElementById("summaryText").value;
 
-let short=text.substring(0,200)+"...";
+let summary=text.substring(0,200)+"...";
 
-document.getElementById("summary").innerText=short;
-
-}
-
-function explain(){
-
-let lesson=document.getElementById("lesson").value;
-
-let explain=
-
-"شرح مبسط:\n"+
-lesson+" هو موضوع مهم في الدراسة ويستخدم لفهم العديد من المفاهيم العلمية.\n\n"+
-"لفهمه يجب دراسة المفاهيم الأساسية المرتبطة به.";
-
-document.getElementById("explain").innerText=explain;
+document.getElementById("summaryResult").innerText=summary;
 
 }
 
+function solveQuestion(){
+
+let question=document.getElementById("questionText").value;
+
+let answer="تحليل السؤال:\n"+question+"\n\nالحل المقترح:\nيمكن تحليل السؤال وتقسيمه إلى خطوات ثم الوصول للحل.";
+
+document.getElementById("questionResult").innerText=answer;
+
+}
+
+function explainLesson(){
+
+let lesson=document.getElementById("lessonText").value;
+
+let explain="شرح مبسط لدرس "+lesson+" :\nهذا الدرس يشرح المفاهيم الأساسية المرتبطة بالموضوع.";
+
+document.getElementById("lessonResult").innerText=explain;
+
+}
 
 function startVoice(){
 
@@ -246,14 +267,35 @@ recognition.start();
 
 recognition.onresult=function(event){
 
-document.getElementById("voiceText").value=event.results[0][0].transcript;
+document.getElementById("voiceResult").value=event.results[0][0].transcript;
 
 }
+
+}
+
+function readImage(){
+
+let file=document.getElementById("ocrImage").files[0];
+
+if(!file) return;
+
+let reader=new FileReader();
+
+reader.onload=function(){
+
+Tesseract.recognize(reader.result,"ara+eng").then(function(result){
+
+document.getElementById("ocrResult").innerText=result.data.text;
+
+});
+
+};
+
+reader.readAsDataURL(file);
 
 }
 
 </script>
 
 </body>
-
 </html>
