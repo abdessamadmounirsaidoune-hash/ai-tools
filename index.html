@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Tools</title>
+<style>
+body{
+font-family: Arial;
+text-align:center;
+background:#f2f2f2;
+}
+.container{
+margin-top:100px;
+}
+input{
+padding:10px;
+width:250px;
+}
+button{
+padding:10px;
+background:#4CAF50;
+color:white;
+border:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>مولد أفكار مشاريع</h1>
+
+<p>اكتب مجال المشروع</p>
+
+<input id="idea" placeholder="مثال: مطعم">
+
+<br><br>
+
+<button onclick="generate()">توليد فكرة</button>
+
+<h2 id="result"></h2>
+</div>
+
+<script>
+
+function generate(){
+
+let ideas = [
+"تطبيق توصيل طعام",
+"موقع بيع منتجات محلية",
+"قناة يوتيوب تعليمية",
+"متجر إلكتروني صغير",
+"خدمة تصميم شعارات"
+];
+
+let random = ideas[Math.floor(Math.random()*ideas.length)];
+
+document.getElementById("result").innerText = random;
+
+}
+
+</script>
+
+</body>
+</html>
