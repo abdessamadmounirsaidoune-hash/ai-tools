@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>DZStudy AI</title>
 
 <style>
 
 body{
-font-family:Arial;
-background:#f3f5fb;
+font-family:system-ui;
 margin:0;
 direction:rtl;
+background:#f2f5fb;
 }
 
 header{
-background:linear-gradient(135deg,#2f63ff,#1a3dbb);
+background:linear-gradient(135deg,#1e4bff,#3a7bff);
 color:white;
-padding:40px;
 text-align:center;
+padding:35px;
 }
 
 .container{
-max-width:900px;
+max-width:1000px;
 margin:auto;
 padding:20px;
 }
@@ -30,35 +32,89 @@ padding:20px;
 .card{
 background:white;
 padding:25px;
-border-radius:12px;
+border-radius:14px;
 margin-bottom:20px;
-box-shadow:0 6px 20px rgba(0,0,0,0.08);
+box-shadow:0 8px 25px rgba(0,0,0,0.08);
 }
 
 input,textarea{
 width:100%;
-padding:12px;
-border-radius:8px;
+padding:14px;
+border-radius:10px;
 border:1px solid #ccc;
 margin-top:10px;
+font-size:16px;
 }
 
 button{
-background:#2f63ff;
+background:#1e4bff;
 color:white;
 border:none;
-padding:12px 20px;
-border-radius:8px;
-margin-top:10px;
+padding:12px 18px;
+border-radius:10px;
+margin-top:12px;
 cursor:pointer;
+font-size:15px;
+}
+
+button:hover{
+background:#1638c4;
 }
 
 .result{
-background:#eef1f7;
+background:#eef2fa;
 padding:15px;
-border-radius:8px;
+border-radius:10px;
 margin-top:15px;
 white-space:pre-line;
+}
+
+.chat-box{
+height:300px;
+overflow:auto;
+background:#eef2fa;
+padding:10px;
+border-radius:10px;
+margin-top:10px;
+}
+
+.msg{
+padding:10px;
+border-radius:8px;
+margin-bottom:10px;
+}
+
+.user{
+background:#dce6ff;
+}
+
+.ai{
+background:white;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 20px;
+background:white;
+box-shadow:0 3px 10px rgba(0,0,0,0.05);
+}
+
+.dark{
+background:#121212;
+color:white;
+}
+
+.dark .card{
+background:#1e1e1e;
+}
+
+.dark input,
+.dark textarea{
+background:#2b2b2b;
+color:white;
+border:none;
 }
 
 </style>
@@ -66,32 +122,71 @@ white-space:pre-line;
 
 <body>
 
+<div class="topbar">
+
+<h3>DZStudy AI</h3>
+
+<button onclick="toggleDark()">🌙</button>
+
+</div>
+
 <header>
-<h1>DZStudy AI</h1>
-<p>مساعدة الطلبة الجزائريين بالذكاء الاصطناعي</p>
+
+<h1>مساعد الطلبة الجزائريين بالذكاء الاصطناعي</h1>
+
 </header>
 
 <div class="container">
 
 <div class="card">
-<h2>إنشاء بحث</h2>
-<input id="topic">
-<button onclick="research()">إنشاء البحث</button>
+
+<h2>💬 الدردشة مع الذكاء الاصطناعي</h2>
+
+<div id="chat" class="chat-box"></div>
+
+<input id="chatInput" placeholder="اكتب سؤالك...">
+
+<button onclick="sendChat()">إرسال</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>📝 إنشاء بحث</h2>
+
+<input id="topic" placeholder="موضوع البحث">
+
+<button onclick="generateResearch()">إنشاء البحث</button>
+
 <div id="researchResult" class="result"></div>
+
 </div>
 
+
 <div class="card">
-<h2>تلخيص نص</h2>
-<textarea id="text"></textarea>
+
+<h2>✂️ تلخيص النصوص</h2>
+
+<textarea id="text" rows="5" placeholder="ضع النص هنا"></textarea>
+
 <button onclick="summarize()">تلخيص</button>
+
 <div id="summaryResult" class="result"></div>
+
 </div>
 
+
 <div class="card">
-<h2>حل سؤال</h2>
-<input id="question">
+
+<h2>❓ حل سؤال</h2>
+
+<input id="question" placeholder="اكتب السؤال">
+
 <button onclick="answer()">حل السؤال</button>
+
 <div id="answerResult" class="result"></div>
+
 </div>
 
 </div>
@@ -100,25 +195,27 @@ white-space:pre-line;
 
 async function askAI(prompt){
 
-const url="https://text.pollinations.ai/"+encodeURIComponent(prompt)
+let url="https://text.pollinations.ai/"+encodeURIComponent(prompt)
 
-const response=await fetch(url)
+let res=await fetch(url)
 
-const text=await response.text()
+let text=await res.text()
 
 return text
 
 }
 
-async function research(){
+async function generateResearch(){
 
 let topic=document.getElementById("topic").value
 
-document.getElementById("researchResult").innerText="جاري الإنشاء..."
+let box=document.getElementById("researchResult")
+
+box.innerText="جاري إنشاء البحث..."
 
 let result=await askAI("اكتب بحثا مدرسيا بمقدمة وعرض وخاتمة حول "+topic)
 
-document.getElementById("researchResult").innerText=result
+box.innerText=result
 
 }
 
@@ -126,11 +223,13 @@ async function summarize(){
 
 let text=document.getElementById("text").value
 
-document.getElementById("summaryResult").innerText="جاري التلخيص..."
+let box=document.getElementById("summaryResult")
 
-let result=await askAI("لخص النص التالي: "+text)
+box.innerText="جاري التلخيص..."
 
-document.getElementById("summaryResult").innerText=result
+let result=await askAI("لخص النص التالي:\n"+text)
+
+box.innerText=result
 
 }
 
@@ -138,11 +237,41 @@ async function answer(){
 
 let q=document.getElementById("question").value
 
-document.getElementById("answerResult").innerText="جاري الحل..."
+let box=document.getElementById("answerResult")
 
-let result=await askAI("أجب عن السؤال التالي للطلاب: "+q)
+box.innerText="جاري حل السؤال..."
 
-document.getElementById("answerResult").innerText=result
+let result=await askAI("أجب عن السؤال التالي للطلاب:\n"+q)
+
+box.innerText=result
+
+}
+
+async function sendChat(){
+
+let input=document.getElementById("chatInput")
+
+let chat=document.getElementById("chat")
+
+let msg=input.value
+
+if(!msg) return
+
+chat.innerHTML+=`<div class="msg user">${msg}</div>`
+
+input.value=""
+
+let reply=await askAI(msg)
+
+chat.innerHTML+=`<div class="msg ai">${reply}</div>`
+
+chat.scrollTop=chat.scrollHeight
+
+}
+
+function toggleDark(){
+
+document.body.classList.toggle("dark")
 
 }
 
