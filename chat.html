@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>DZStudy AI Chat</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f3f4f7;
+margin:0;
+}
+
+header{
+background:#3b6cff;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+.chat{
+max-width:800px;
+margin:auto;
+padding:20px;
+}
+
+.messages{
+background:white;
+height:450px;
+overflow:auto;
+border-radius:15px;
+padding:20px;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.msg{
+margin-bottom:10px;
+padding:10px;
+border-radius:10px;
+}
+
+.user{
+background:#3b6cff;
+color:white;
+text-align:right;
+}
+
+.ai{
+background:#eee;
+}
+
+.input{
+display:flex;
+margin-top:10px;
+gap:10px;
+}
+
+input{
+flex:1;
+padding:12px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+button{
+background:#3b6cff;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>💬 الدردشة الذكية</h2>
+
+</header>
+
+<div class="chat">
+
+<div id="messages" class="messages"></div>
+
+<div class="input">
+
+<input id="question" placeholder="اكتب سؤالك">
+
+<button onclick="send()">إرسال</button>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
