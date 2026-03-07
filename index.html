@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -55,33 +54,25 @@ border-radius:8px;
 cursor:pointer;
 }
 
-button:hover{
-background:#1e40af;
-}
-
 .result{
 margin-top:15px;
-background:#f1f5f9;
+background:#eef2f7;
 padding:15px;
 border-radius:8px;
 white-space:pre-line;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
-
-<h1>DZStudy</h1>
+<h1>DZStudy AI</h1>
 <p>مساعدة الطلبة الجزائريين بالذكاء الاصطناعي</p>
-
 </header>
 
 <div class="container">
-
 
 <div class="card">
 
@@ -100,7 +91,7 @@ white-space:pre-line;
 
 <h2>تلخيص النصوص</h2>
 
-<textarea id="summaryText" rows="5" placeholder="ضع النص هنا"></textarea>
+<textarea id="summaryText" rows="5"></textarea>
 
 <button onclick="summarizeText()">تلخيص</button>
 
@@ -113,7 +104,7 @@ white-space:pre-line;
 
 <h2>حل سؤال</h2>
 
-<textarea id="questionText" rows="4" placeholder="اكتب السؤال"></textarea>
+<textarea id="questionText" rows="4"></textarea>
 
 <button onclick="solveQuestion()">حل السؤال</button>
 
@@ -121,11 +112,9 @@ white-space:pre-line;
 
 </div>
 
-
 </div>
 
 <script>
-
 
 let API_KEY = localStorage.getItem("HF_KEY");
 
@@ -137,95 +126,116 @@ localStorage.setItem("HF_KEY",API_KEY);
 
 }
 
-
 async function generateResearch(){
 
 let topic=document.getElementById("researchTopic").value;
 
-document.getElementById("researchResult").innerText="جاري إنشاء البحث...";
+let result=document.getElementById("researchResult");
+
+result.innerText="جاري إنشاء البحث...";
+
+try{
 
 let response=await fetch(
-"https://api-inference.huggingface.co/models/google/flan-t5-large",
+"https://api-inference.huggingface.co/models/google/flan-t5-base",
 {
-
 method:"POST",
-
 headers:{
-"Authorization":"Bearer "+API_KEY,
+Authorization:"Bearer "+API_KEY,
 "Content-Type":"application/json"
 },
-
 body:JSON.stringify({
-inputs:"اكتب بحثا دراسيا كاملا عن "+topic
+inputs:"اكتب بحثا بسيطا عن "+topic
 })
-
 });
 
 let data=await response.json();
 
-document.getElementById("researchResult").innerText=data[0].generated_text;
+if(data.error){
+
+result.innerText="النموذج يستيقظ... حاول مرة أخرى بعد 10 ثوان.";
+
+}else{
+
+result.innerText=data[0].generated_text;
 
 }
 
+}catch(err){
+
+result.innerText="حدث خطأ في الاتصال.";
+
+}
+
+}
 
 
 async function summarizeText(){
 
 let text=document.getElementById("summaryText").value;
 
-document.getElementById("summaryResult").innerText="جاري التلخيص...";
+let result=document.getElementById("summaryResult");
+
+result.innerText="جاري التلخيص...";
+
+try{
 
 let response=await fetch(
 "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
 {
-
 method:"POST",
-
 headers:{
-"Authorization":"Bearer "+API_KEY,
+Authorization:"Bearer "+API_KEY,
 "Content-Type":"application/json"
 },
-
-body:JSON.stringify({
-inputs:text
-})
-
+body:JSON.stringify({inputs:text})
 });
 
 let data=await response.json();
 
-document.getElementById("summaryResult").innerText=data[0].summary_text;
+result.innerText=data[0].summary_text;
+
+}catch{
+
+result.innerText="حدث خطأ.";
 
 }
 
+}
 
 
 async function solveQuestion(){
 
 let q=document.getElementById("questionText").value;
 
-document.getElementById("questionResult").innerText="جاري الحل...";
+let result=document.getElementById("questionResult");
+
+result.innerText="جاري الحل...";
+
+try{
 
 let response=await fetch(
-"https://api-inference.huggingface.co/models/google/flan-t5-large",
+"https://api-inference.huggingface.co/models/google/flan-t5-base",
 {
-
 method:"POST",
-
 headers:{
-"Authorization":"Bearer "+API_KEY,
+Authorization:"Bearer "+API_KEY,
 "Content-Type":"application/json"
 },
-
 body:JSON.stringify({
 inputs:"حل السؤال التالي واشرحه: "+q
 })
-
 });
 
 let data=await response.json();
 
-document.getElementById("questionResult").innerText=data[0].generated_text;
+result.innerText=data[0].generated_text;
+
+}catch{
+
+result.innerText="حدث خطأ.";
+
+}
 
 }
 
