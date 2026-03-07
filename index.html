@@ -1,60 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-<title>AI Tools</title>
+<meta charset="UTF-8">
+<title>مولد أفكار مشاريع بالذكاء الاصطناعي</title>
+
 <style>
 body{
-font-family: Arial;
+font-family:Arial;
 text-align:center;
 background:#f2f2f2;
+padding-top:100px;
 }
-.container{
-margin-top:100px;
-}
+
 input{
 padding:10px;
 width:250px;
+font-size:18px;
 }
+
 button{
-padding:10px;
-background:#4CAF50;
+padding:10px 20px;
+font-size:18px;
+background:#28a745;
 color:white;
 border:none;
+cursor:pointer;
+}
+
+#result{
+margin-top:30px;
+font-size:22px;
+font-weight:bold;
 }
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
-<h1>مولد أفكار مشاريع</h1>
+<h1>مولد أفكار مشاريع بالذكاء الاصطناعي</h1>
 
 <p>اكتب مجال المشروع</p>
 
-<input id="idea" placeholder="مثال: مطعم">
+<input id="idea" placeholder="مثلا: التجارة">
 
 <br><br>
 
 <button onclick="generate()">توليد فكرة</button>
 
-<h2 id="result"></h2>
-</div>
+<p id="result"></p>
 
 <script>
 
-function generate(){
+async function generate(){
 
-let ideas = [
-"تطبيق توصيل طعام",
-"موقع بيع منتجات محلية",
-"قناة يوتيوب تعليمية",
-"متجر إلكتروني صغير",
-"خدمة تصميم شعارات"
-];
+let prompt=document.getElementById("idea").value;
 
-let random = ideas[Math.floor(Math.random()*ideas.length)];
+document.getElementById("result").innerText="...جاري التفكير";
 
-document.getElementById("result").innerText = random;
+let response=await fetch(
+"https://api-inference.huggingface.co/models/google/flan-t5-large",
+{
+method:"POST",
+
+headers:{
+"Authorization":"Bearer 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",
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+inputs:"اعطني فكرة مشروع مربح في مجال "+prompt
+})
+
+});
+
+let data=await response.json();
+
+document.getElementById("result").innerText=data[0].generated_text;
 
 }
 
