@@ -54,19 +54,6 @@ padding:12px 18px;
 border-radius:10px;
 margin-top:12px;
 cursor:pointer;
-font-size:15px;
-}
-
-button:hover{
-background:#1638c4;
-}
-
-.result{
-background:#eef2fa;
-padding:15px;
-border-radius:10px;
-margin-top:15px;
-white-space:pre-line;
 }
 
 .chat-box{
@@ -84,55 +71,26 @@ border-radius:8px;
 margin-bottom:10px;
 }
 
-.user{
-background:#dce6ff;
-}
-
-.ai{
-background:white;
-}
-
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px 20px;
-background:white;
-box-shadow:0 3px 10px rgba(0,0,0,0.05);
-}
+.user{background:#dce6ff;}
+.ai{background:white;}
 
 .dark{
 background:#121212;
 color:white;
 }
 
-.dark .card{
-background:#1e1e1e;
-}
-
-.dark input,
-.dark textarea{
-background:#2b2b2b;
-color:white;
-border:none;
-}
+.dark .card{background:#1e1e1e;}
 
 </style>
+
 </head>
 
 <body>
 
-<div class="topbar">
-
-<h3>DZStudy AI</h3>
-
-<button onclick="toggleDark()">🌙</button>
-
-</div>
-
 <header>
 
-<h1>مساعد الطلبة الجزائريين بالذكاء الاصطناعي</h1>
+<h1>DZStudy AI</h1>
+<p>مساعد الطلبة الجزائريين بالذكاء الاصطناعي</p>
 
 </header>
 
@@ -140,13 +98,14 @@ border:none;
 
 <div class="card">
 
-<h2>💬 الدردشة مع الذكاء الاصطناعي</h2>
+<h2>💬 الدردشة</h2>
 
 <div id="chat" class="chat-box"></div>
 
-<input id="chatInput" placeholder="اكتب سؤالك...">
+<input id="chatInput" placeholder="اكتب سؤالك">
 
 <button onclick="sendChat()">إرسال</button>
+<button onclick="voice()">🎤 صوت</button>
 
 </div>
 
@@ -155,41 +114,53 @@ border:none;
 
 <h2>📝 إنشاء بحث</h2>
 
-<input id="topic" placeholder="موضوع البحث">
+<input id="topic">
 
-<button onclick="generateResearch()">إنشاء البحث</button>
+<button onclick="research()">إنشاء</button>
 
-<div id="researchResult" class="result"></div>
+<div id="researchResult"></div>
 
 </div>
 
 
 <div class="card">
 
-<h2>✂️ تلخيص النصوص</h2>
+<h2>✂️ تلخيص نص</h2>
 
-<textarea id="text" rows="5" placeholder="ضع النص هنا"></textarea>
+<textarea id="text"></textarea>
 
 <button onclick="summarize()">تلخيص</button>
 
-<div id="summaryResult" class="result"></div>
+<div id="summaryResult"></div>
 
 </div>
 
 
 <div class="card">
 
-<h2>❓ حل سؤال</h2>
+<h2>📷 قراءة نص من صورة</h2>
 
-<input id="question" placeholder="اكتب السؤال">
+<input type="file" id="imageInput">
 
-<button onclick="answer()">حل السؤال</button>
+<div id="ocrResult"></div>
 
-<div id="answerResult" class="result"></div>
+</div>
+
+
+<div class="card">
+
+<h2>📄 تلخيص PDF</h2>
+
+<input type="file" id="pdfInput">
+
+<div id="pdfResult"></div>
 
 </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
 
 <script>
 
@@ -205,15 +176,36 @@ return text
 
 }
 
-async function generateResearch(){
+async function sendChat(){
+
+let input=document.getElementById("chatInput")
+let chat=document.getElementById("chat")
+
+let msg=input.value
+
+if(!msg)return
+
+chat.innerHTML+=`<div class="msg user">${msg}</div>`
+
+input.value=""
+
+let reply=await askAI(msg)
+
+chat.innerHTML+=`<div class="msg ai">${reply}</div>`
+
+chat.scrollTop=chat.scrollHeight
+
+}
+
+async function research(){
 
 let topic=document.getElementById("topic").value
 
 let box=document.getElementById("researchResult")
 
-box.innerText="جاري إنشاء البحث..."
+box.innerText="جاري الإنشاء..."
 
-let result=await askAI("اكتب بحثا مدرسيا بمقدمة وعرض وخاتمة حول "+topic)
+let result=await askAI("اكتب بحثا بمقدمة وعرض وخاتمة حول "+topic)
 
 box.innerText=result
 
@@ -233,47 +225,73 @@ box.innerText=result
 
 }
 
-async function answer(){
+function voice(){
 
-let q=document.getElementById("question").value
+const recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)()
 
-let box=document.getElementById("answerResult")
+recognition.lang="ar"
 
-box.innerText="جاري حل السؤال..."
+recognition.start()
 
-let result=await askAI("أجب عن السؤال التالي للطلاب:\n"+q)
+recognition.onresult=function(e){
 
-box.innerText=result
-
-}
-
-async function sendChat(){
-
-let input=document.getElementById("chatInput")
-
-let chat=document.getElementById("chat")
-
-let msg=input.value
-
-if(!msg) return
-
-chat.innerHTML+=`<div class="msg user">${msg}</div>`
-
-input.value=""
-
-let reply=await askAI(msg)
-
-chat.innerHTML+=`<div class="msg ai">${reply}</div>`
-
-chat.scrollTop=chat.scrollHeight
+document.getElementById("chatInput").value=e.results[0][0].transcript
 
 }
 
-function toggleDark(){
+}
 
-document.body.classList.toggle("dark")
+document.getElementById("imageInput").addEventListener("change",async function(){
+
+let file=this.files[0]
+
+let result=document.getElementById("ocrResult")
+
+result.innerText="جاري القراءة..."
+
+const {data:{text}}=await Tesseract.recognize(file,'ara+eng')
+
+result.innerText=text
+
+})
+
+document.getElementById("pdfInput").addEventListener("change",async function(){
+
+let file=this.files[0]
+
+let result=document.getElementById("pdfResult")
+
+result.innerText="جاري قراءة PDF..."
+
+let reader=new FileReader()
+
+reader.onload=async function(){
+
+let typed=new Uint8Array(this.result)
+
+let pdf=await pdfjsLib.getDocument(typed).promise
+
+let text=""
+
+for(let i=1;i<=pdf.numPages;i++){
+
+let page=await pdf.getPage(i)
+
+let content=await page.getTextContent()
+
+text+=content.items.map(s=>s.str).join(" ")
 
 }
+
+let summary=await askAI("لخص النص التالي:\n"+text)
+
+result.innerText=summary
+
+}
+
+reader.readAsArrayBuffer(file)
+
+})
 
 </script>
 
