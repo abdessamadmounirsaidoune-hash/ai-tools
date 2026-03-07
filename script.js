@@ -1,54 +1,25 @@
-const API_KEY = prompt("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");
+async function askAI() {
 
-const API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const question = document.getElementById("question").value;
 
-async function send() {
+document.getElementById("answer").innerText = "جاري التفكير...";
 
-let input = document.getElementById("question");
-let chat = document.getElementById("messages");
-
-let text = input.value;
-
-if(!text) return;
-
-chat.innerHTML += `
-<div class="msg user">${text}</div>
-`;
-
-input.value = "";
-
-chat.innerHTML += `
-<div class="msg ai" id="loading">جاري التفكير...</div>
-`;
-
-try{
-
-const response = await fetch(API_URL,{
-method:"POST",
-headers:{
-"Authorization":"Bearer " + API_KEY,
-"Content-Type":"application/json"
+const response = await fetch("https://cold-mountain-df10.abdessamadmounirsaidoune.workers.dev", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
 },
-body:JSON.stringify({
-model:"openai/gpt-3.5-turbo",
-messages:[
-{role:"user",content:text}
+body: JSON.stringify({
+model: "openai/gpt-3.5-turbo",
+messages: [
+{ role: "user", content: question }
 ]
 })
 });
 
 const data = await response.json();
 
-let answer = data.choices[0].message.content;
-
-document.getElementById("loading").innerHTML = answer;
-
-}catch(e){
-
-document.getElementById("loading").innerHTML = "حدث خطأ في الاتصال";
-
-}
-
-chat.scrollTop = chat.scrollHeight;
+document.getElementById("answer").innerText =
+data.choices[0].message.content;
 
 }
