@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>DZStudy | منصة الطالب الذكية</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -12,15 +14,37 @@
 body{
 font-family:Arial;
 margin:0;
-background:#f3f6fb;
+background:#f1f5f9;
 direction:rtl;
+}
+
+nav{
+background:#1e3a8a;
+color:white;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 25px;
+}
+
+nav h2{
+margin:0;
+}
+
+nav button{
+background:white;
+color:#1e3a8a;
+border:none;
+padding:8px 15px;
+border-radius:6px;
+cursor:pointer;
 }
 
 header{
 background:linear-gradient(135deg,#2563eb,#1e40af);
 color:white;
-padding:30px;
 text-align:center;
+padding:50px 20px;
 }
 
 .container{
@@ -37,8 +61,10 @@ border-radius:12px;
 box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-.card h2{
-margin-top:0;
+.icon{
+font-size:28px;
+color:#2563eb;
+margin-bottom:10px;
 }
 
 input,textarea{
@@ -50,24 +76,17 @@ border:1px solid #ccc;
 font-size:16px;
 }
 
-button{
+button.main{
 background:#2563eb;
 color:white;
 border:none;
 padding:12px 18px;
 border-radius:8px;
 cursor:pointer;
-font-size:15px;
 }
 
-button:hover{
+button.main:hover{
 background:#1e3a8a;
-}
-
-.icon{
-font-size:24px;
-color:#2563eb;
-margin-bottom:10px;
 }
 
 .result{
@@ -89,33 +108,47 @@ color:#777;
 
 <body>
 
+<nav>
+
+<h2>DZStudy</h2>
+
+<div>
+<button>تسجيل الدخول</button>
+<button>إنشاء حساب</button>
+</div>
+
+</nav>
+
 <header>
 
-<h1>DZStudy</h1>
-<p>منصة الطالب الجزائري للبحوث والواجبات والدراسة</p>
+<h1>منصة DZStudy</h1>
+<p>مساعدة الطلبة الجزائريين في الدراسة والبحوث</p>
 
 </header>
 
 <div class="container">
 
-<!-- توليد بحث -->
+
+<!-- إنشاء بحث -->
 
 <div class="card">
 
 <div class="icon"><i class="fa-solid fa-lightbulb"></i></div>
 
-<h2>توليد فكرة بحث</h2>
+<h2>إنشاء بحث</h2>
 
 <input id="researchTopic" placeholder="اكتب موضوع البحث">
 
-<button onclick="generateResearch()">توليد</button>
+<input type="file" accept="image/*">
+
+<button class="main" onclick="generateResearch()">إنشاء البحث</button>
 
 <div id="researchResult" class="result"></div>
 
 </div>
 
 
-<!-- تلخيص النص -->
+<!-- تلخيص -->
 
 <div class="card">
 
@@ -125,9 +158,9 @@ color:#777;
 
 <textarea id="summaryText" rows="5" placeholder="ضع النص هنا"></textarea>
 
-<input type="file" id="summaryImage" accept="image/*">
+<input type="file" accept="image/*">
 
-<button onclick="summarizeText()">تلخيص</button>
+<button class="main" onclick="summarizeText()">تلخيص</button>
 
 <div id="summaryResult" class="result"></div>
 
@@ -144,28 +177,30 @@ color:#777;
 
 <textarea id="questionText" rows="4" placeholder="اكتب السؤال"></textarea>
 
-<input type="file" id="questionImage" accept="image/*">
+<input type="file" accept="image/*">
 
-<button onclick="solveQuestion()">حل السؤال</button>
+<button class="main" onclick="solveQuestion()">حل السؤال</button>
 
 <div id="questionResult" class="result"></div>
 
 </div>
 
 
-<!-- شرح الدروس -->
+<!-- إنشاء بحث آخر -->
 
 <div class="card">
 
 <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
 
-<h2>شرح درس</h2>
+<h2>إنشاء بحث متقدم</h2>
 
-<input id="lessonText" placeholder="اكتب اسم الدرس">
+<input id="researchTopic2" placeholder="اكتب موضوع البحث">
 
-<button onclick="explainLesson()">شرح</button>
+<input type="file" accept="image/*">
 
-<div id="lessonResult" class="result"></div>
+<button class="main" onclick="generateResearch2()">إنشاء</button>
+
+<div id="researchResult2" class="result"></div>
 
 </div>
 
@@ -178,28 +213,12 @@ color:#777;
 
 <h2>تحويل الصوت إلى كتابة</h2>
 
-<button onclick="startVoice()">ابدأ التسجيل</button>
+<button class="main" onclick="startVoice()">ابدأ التسجيل</button>
 
 <textarea id="voiceResult" rows="3" placeholder="سيظهر النص هنا"></textarea>
 
 </div>
 
-
-<!-- قراءة النص من الصورة -->
-
-<div class="card">
-
-<div class="icon"><i class="fa-solid fa-image"></i></div>
-
-<h2>قراءة النص من صورة</h2>
-
-<input type="file" id="ocrImage" accept="image/*">
-
-<button onclick="readImage()">قراءة النص</button>
-
-<div id="ocrResult" class="result"></div>
-
-</div>
 
 </div>
 
@@ -209,21 +228,14 @@ DZStudy 2026
 
 </footer>
 
-
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
-
 <script>
 
 function generateResearch(){
 
 let topic=document.getElementById("researchTopic").value;
 
-let text="مقدمة:\nيعد موضوع "+topic+" من المواضيع المهمة.\n\n"+
-"إشكالية البحث:\nما أهمية "+topic+" وتأثيره؟\n\n"+
-"الأهداف:\n- فهم المفهوم\n- دراسة التأثير\n\n"+
-"الخاتمة:\nيمثل "+topic+" مجالاً مهماً للدراسة.";
-
-document.getElementById("researchResult").innerText=text;
+document.getElementById("researchResult").innerText=
+"مقدمة حول "+topic+"\n\nمشكلة البحث\n\nأهداف البحث\n\nالخاتمة.";
 
 }
 
@@ -231,29 +243,24 @@ function summarizeText(){
 
 let text=document.getElementById("summaryText").value;
 
-let summary=text.substring(0,200)+"...";
-
-document.getElementById("summaryResult").innerText=summary;
+document.getElementById("summaryResult").innerText=text.substring(0,200)+"...";
 
 }
 
 function solveQuestion(){
 
-let question=document.getElementById("questionText").value;
+let q=document.getElementById("questionText").value;
 
-let answer="تحليل السؤال:\n"+question+"\n\nالحل المقترح:\nيمكن تحليل السؤال وتقسيمه إلى خطوات ثم الوصول للحل.";
-
-document.getElementById("questionResult").innerText=answer;
+document.getElementById("questionResult").innerText="تحليل السؤال:\n"+q+"\n\nالحل المقترح...";
 
 }
 
-function explainLesson(){
+function generateResearch2(){
 
-let lesson=document.getElementById("lessonText").value;
+let topic=document.getElementById("researchTopic2").value;
 
-let explain="شرح مبسط لدرس "+lesson+" :\nهذا الدرس يشرح المفاهيم الأساسية المرتبطة بالموضوع.";
-
-document.getElementById("lessonResult").innerText=explain;
+document.getElementById("researchResult2").innerText=
+"بحث متقدم حول "+topic+"\n\nمقدمة\n\nتحليل\n\nخاتمة.";
 
 }
 
@@ -270,28 +277,6 @@ recognition.onresult=function(event){
 document.getElementById("voiceResult").value=event.results[0][0].transcript;
 
 }
-
-}
-
-function readImage(){
-
-let file=document.getElementById("ocrImage").files[0];
-
-if(!file) return;
-
-let reader=new FileReader();
-
-reader.onload=function(){
-
-Tesseract.recognize(reader.result,"ara+eng").then(function(result){
-
-document.getElementById("ocrResult").innerText=result.data.text;
-
-});
-
-};
-
-reader.readAsDataURL(file);
 
 }
 
