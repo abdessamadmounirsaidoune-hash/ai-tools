@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>DZStudy AI</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#f4f6fb;
 margin:0;
+background:#f4f6fb;
 direction:rtl;
 }
 
@@ -60,6 +62,7 @@ background:#eef2f7;
 padding:15px;
 border-radius:8px;
 white-space:pre-line;
+min-height:50px;
 }
 
 </style>
@@ -69,8 +72,10 @@ white-space:pre-line;
 <body>
 
 <header>
+
 <h1>DZStudy AI</h1>
-<p>مساعدة الطلبة الجزائريين بالدراسة والبحوث</p>
+<p>مساعدة الطلبة الجزائريين في الدراسة والبحوث</p>
+
 </header>
 
 <div class="container">
@@ -107,13 +112,14 @@ white-space:pre-line;
 
 <textarea id="question" rows="4" placeholder="اكتب السؤال"></textarea>
 
-<button onclick="solve()">حل السؤال</button>
+<button onclick="solveQuestion()">حل السؤال</button>
 
 <div id="answerResult" class="result"></div>
 
 </div>
 
 </div>
+
 
 <script>
 
@@ -129,13 +135,13 @@ setTimeout(()=>{
 
 result.innerText=
 "مقدمة:\n"+
-"يعتبر موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
+"يعد موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
 "العرض:\n"+
-"يتعلق "+topic+" بعدة مجالات علمية واجتماعية ويؤثر بشكل كبير في المجتمع.\n\n"+
+"يتعلق "+topic+" بالعديد من الجوانب العلمية والاجتماعية ويؤثر بشكل كبير في تطور المجتمع.\n\n"+
 "الخاتمة:\n"+
-"في النهاية يمكن القول أن "+topic+" يلعب دورًا مهمًا في تطور المجتمعات."
+"في النهاية يمكن القول أن "+topic+" يلعب دورًا مهمًا في تقدم المجتمعات."
 
-},1200)
+},1500)
 
 }
 
@@ -159,7 +165,7 @@ result.innerText=text.substring(0,200)+" ..."
 
 
 
-function solve(){
+function solveQuestion(){
 
 let question=document.getElementById("question").value
 
@@ -172,9 +178,9 @@ setTimeout(()=>{
 result.innerText=
 "تحليل السؤال:\n"+question+
 "\n\nالحل:\n"+
-"لحل هذا السؤال يجب تحليل المعطيات واستخدام القواعد العلمية المناسبة."
+"لحل هذا السؤال يجب تحليل المعطيات واستعمال القواعد المناسبة."
 
-},1000)
+},1200)
 
 }
 
