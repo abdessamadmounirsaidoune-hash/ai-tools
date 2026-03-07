@@ -1,86 +1,155 @@
 <!DOCTYPE html>
 <html lang="ar">
+
 <head>
+
 <meta charset="UTF-8">
-<title>مولد أفكار مشاريع بالذكاء الاصطناعي</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>DZStudy | مساعد الطلبة الجزائريين</title>
 
 <style>
+
 body{
 font-family:Arial;
+background:#f4f6fb;
+margin:0;
 text-align:center;
-background:#f2f2f2;
-padding-top:100px;
 }
 
-input{
-padding:10px;
-width:250px;
-font-size:18px;
+header{
+background:#2563eb;
+color:white;
+padding:25px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:30px;
+}
+
+.card{
+background:white;
+padding:25px;
+margin:20px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+input,textarea{
+width:90%;
+padding:12px;
+font-size:16px;
+margin:10px;
+border-radius:6px;
+border:1px solid #ccc;
 }
 
 button{
-padding:10px 20px;
-font-size:18px;
-background:#28a745;
+background:#2563eb;
 color:white;
 border:none;
+padding:12px 20px;
+font-size:16px;
+border-radius:6px;
 cursor:pointer;
 }
 
-#result{
-margin-top:30px;
-font-size:22px;
-font-weight:bold;
+button:hover{
+background:#1e40af;
 }
+
+.result{
+margin-top:15px;
+white-space:pre-line;
+font-size:17px;
+}
+
+footer{
+padding:20px;
+color:#777;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>مولد أفكار مشاريع بالذكاء الاصطناعي</h1>
+<header>
 
-<p>اكتب مجال المشروع</p>
+<h1>DZStudy</h1>
 
-<input id="idea" placeholder="مثلا: التجارة">
+<p>موقع يساعد الطلبة الجزائريين في البحوث والواجبات</p>
 
-<br><br>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>إنشاء فكرة بحث</h2>
+
+<input id="topic" placeholder="مثال: الطاقة الشمسية">
+
+<br>
 
 <button onclick="generate()">توليد فكرة</button>
 
-<p id="result"></p>
+<div id="research" class="result"></div>
+
+</div>
+
+<div class="card">
+
+<h2>تلخيص النصوص</h2>
+
+<textarea id="text" rows="5" placeholder="ضع النص هنا"></textarea>
+
+<br>
+
+<button onclick="summarize()">تلخيص</button>
+
+<div id="summary" class="result"></div>
+
+</div>
+
+</div>
+
+<footer>
+
+DZStudy 2026
+
+</footer>
 
 <script>
 
-async function generate(){
+function generate(){
 
-let prompt=document.getElementById("idea").value;
+let topic=document.getElementById("topic").value;
 
-document.getElementById("result").innerText="...جاري التفكير";
+let result="مقدمة:\nيعد موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
+"مشكلة البحث:\nما أهمية "+topic+" وتأثيره على المجتمع؟\n\n"+
+"الأهداف:\n- فهم مفهوم "+topic+"\n- دراسة تأثيره\n- اقتراح حلول.\n\n"+
+"الخاتمة:\nيمثل "+topic+" مجالا مهما للدراسة.";
 
-let response=await fetch(
-"https://api-inference.huggingface.co/models/google/flan-t5-large",
-{
-method:"POST",
+document.getElementById("research").innerText=result;
 
-headers:{
-"Authorization":"Bearer hf_AFQCOPsdNqGhdapIrwAxlfzdQF0pwZehiu",
-"Content-Type":"application/json"
-},
+}
 
-body:JSON.stringify({
-inputs:"اعطني فكرة مشروع مربح في مجال "+prompt
-})
+function summarize(){
 
-});
+let text=document.getElementById("text").value;
 
-let data=await response.json();
+let short=text.substring(0,200)+"...";
 
-document.getElementById("result").innerText=data[0].generated_text;
+document.getElementById("summary").innerText=short;
 
 }
 
 </script>
 
 </body>
+
 </html>
