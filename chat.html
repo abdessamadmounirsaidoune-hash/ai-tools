@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-
 <meta charset="UTF-8">
-<title>الذكاء الاصطناعي</title>
-
+<title>الدردشة</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-<h1>اسأل الذكاء الاصطناعي</h1>
+<h2>الدردشة مع الذكاء الاصطناعي</h2>
 
-<input id="question" placeholder="اكتب سؤالك هنا">
+<div id="chat"></div>
 
-<button onclick="askAI()">اسأل</button>
-
-<div id="answer"></div>
+<div class="chat-box">
+<input id="question" placeholder="اكتب سؤالك">
+<button onclick="askAI()">إرسال</button>
+</div>
 
 <script src="script.js"></script>
 
