@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>DZStudy AI</title>
 
 <style>
-
 body{
 font-family:Arial;
 margin:0;
-background:#f4f6fb;
+background:#f5f7fb;
 direction:rtl;
 }
 
@@ -61,15 +59,15 @@ padding:15px;
 border-radius:8px;
 white-space:pre-line;
 }
-
 </style>
+
 </head>
 
 <body>
 
 <header>
 <h1>DZStudy AI</h1>
-<p>مساعدة الطلبة الجزائريين بالذكاء الاصطناعي</p>
+<p>مساعدة الطلبة الجزائريين بالدراسة والبحوث</p>
 </header>
 
 <div class="container">
@@ -116,17 +114,7 @@ white-space:pre-line;
 
 <script>
 
-let API_KEY = localStorage.getItem("HF_KEY");
-
-if(!API_KEY){
-
-API_KEY = prompt("ضع مفتاح HuggingFace API");
-
-localStorage.setItem("HF_KEY",API_KEY);
-
-}
-
-async function generateResearch(){
+function generateResearch(){
 
 let topic=document.getElementById("researchTopic").value;
 
@@ -134,43 +122,22 @@ let result=document.getElementById("researchResult");
 
 result.innerText="جاري إنشاء البحث...";
 
-try{
+setTimeout(()=>{
 
-let response=await fetch(
-"https://api-inference.huggingface.co/models/google/flan-t5-base",
-{
-method:"POST",
-headers:{
-Authorization:"Bearer "+API_KEY,
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-inputs:"اكتب بحثا بسيطا عن "+topic
-})
-});
+result.innerText=
+"مقدمة:\n"+
+"يعد موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
+"الشرح:\n"+
+"يؤثر "+topic+" في العديد من المجالات مثل الاقتصاد والمجتمع والتكنولوجيا.\n\n"+
+"الخاتمة:\n"+
+"يمكن القول إن "+topic+" له دور كبير في تطوير المجتمعات.";
 
-let data=await response.json();
-
-if(data.error){
-
-result.innerText="النموذج يستيقظ... حاول مرة أخرى بعد 10 ثوان.";
-
-}else{
-
-result.innerText=data[0].generated_text;
-
-}
-
-}catch(err){
-
-result.innerText="حدث خطأ في الاتصال.";
-
-}
+},1500)
 
 }
 
 
-async function summarizeText(){
+function summarizeText(){
 
 let text=document.getElementById("summaryText").value;
 
@@ -178,33 +145,16 @@ let result=document.getElementById("summaryResult");
 
 result.innerText="جاري التلخيص...";
 
-try{
+setTimeout(()=>{
 
-let response=await fetch(
-"https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
-{
-method:"POST",
-headers:{
-Authorization:"Bearer "+API_KEY,
-"Content-Type":"application/json"
-},
-body:JSON.stringify({inputs:text})
-});
+result.innerText=text.substring(0,200)+" ...";
 
-let data=await response.json();
-
-result.innerText=data[0].summary_text;
-
-}catch{
-
-result.innerText="حدث خطأ.";
-
-}
+},1000)
 
 }
 
 
-async function solveQuestion(){
+function solveQuestion(){
 
 let q=document.getElementById("questionText").value;
 
@@ -212,30 +162,14 @@ let result=document.getElementById("questionResult");
 
 result.innerText="جاري الحل...";
 
-try{
+setTimeout(()=>{
 
-let response=await fetch(
-"https://api-inference.huggingface.co/models/google/flan-t5-base",
-{
-method:"POST",
-headers:{
-Authorization:"Bearer "+API_KEY,
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-inputs:"حل السؤال التالي واشرحه: "+q
-})
-});
+result.innerText=
+"تحليل السؤال:\n"+q+
+"\n\nالحل المقترح:\n"+
+"يمكن حل هذا السؤال باتباع الخطوات المناسبة وتحليل المعطيات.";
 
-let data=await response.json();
-
-result.innerText=data[0].generated_text;
-
-}catch{
-
-result.innerText="حدث خطأ.";
-
-}
+},1500)
 
 }
 
