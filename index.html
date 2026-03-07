@@ -12,74 +12,62 @@
 body{
 font-family:system-ui;
 margin:0;
+background:#f3f6fd;
 direction:rtl;
-background:#f2f5fb;
 }
 
 header{
-background:linear-gradient(135deg,#1e4bff,#3a7bff);
+background:linear-gradient(135deg,#2f63ff,#3f7cff);
 color:white;
 text-align:center;
-padding:35px;
+padding:60px 20px;
+}
+
+header h1{
+font-size:40px;
+margin:0;
+}
+
+header p{
+opacity:0.9;
+margin-top:10px;
 }
 
 .container{
 max-width:1000px;
 margin:auto;
-padding:20px;
+padding:30px;
 }
 
-.card{
+.tools{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+
+.tool{
 background:white;
-padding:25px;
-border-radius:14px;
-margin-bottom:20px;
+padding:30px;
+border-radius:16px;
+text-align:center;
 box-shadow:0 8px 25px rgba(0,0,0,0.08);
-}
-
-input,textarea{
-width:100%;
-padding:14px;
-border-radius:10px;
-border:1px solid #ccc;
-margin-top:10px;
-font-size:16px;
-}
-
-button{
-background:#1e4bff;
-color:white;
-border:none;
-padding:12px 18px;
-border-radius:10px;
-margin-top:12px;
 cursor:pointer;
+transition:0.2s;
 }
 
-.chat-box{
-height:300px;
-overflow:auto;
-background:#eef2fa;
-padding:10px;
-border-radius:10px;
-margin-top:10px;
+.tool:hover{
+transform:translateY(-5px);
 }
 
-.msg{
-padding:10px;
-border-radius:8px;
-margin-bottom:10px;
+.tool h3{
+margin:10px 0;
 }
 
-.user{background:#dce6ff;}
-.ai{background:white;}
-
-.dark{
-background:#121212;
-color:white;
+footer{
+text-align:center;
+padding:30px;
+color:#777;
 }
-
-.dark .card{background:#1e1e1e;}
 
 </style>
 
@@ -90,210 +78,56 @@ color:white;
 <header>
 
 <h1>DZStudy AI</h1>
-<p>مساعد الطلبة الجزائريين بالذكاء الاصطناعي</p>
+
+<p>منصة ذكاء اصطناعي لمساعدة الطلاب الجزائريين في الدراسة</p>
 
 </header>
 
 <div class="container">
 
-<div class="card">
+<h2 style="text-align:center">الأدوات</h2>
 
-<h2>💬 الدردشة</h2>
+<div class="tools">
 
-<div id="chat" class="chat-box"></div>
-
-<input id="chatInput" placeholder="اكتب سؤالك">
-
-<button onclick="sendChat()">إرسال</button>
-<button onclick="voice()">🎤 صوت</button>
-
+<div class="tool">
+<h3>💬 الدردشة الذكية</h3>
+<p>اسأل أي سؤال دراسي</p>
 </div>
 
-
-<div class="card">
-
-<h2>📝 إنشاء بحث</h2>
-
-<input id="topic">
-
-<button onclick="research()">إنشاء</button>
-
-<div id="researchResult"></div>
-
+<div class="tool">
+<h3>📷 حل التمارين</h3>
+<p>ارفع صورة التمرين</p>
 </div>
 
-
-<div class="card">
-
-<h2>✂️ تلخيص نص</h2>
-
-<textarea id="text"></textarea>
-
-<button onclick="summarize()">تلخيص</button>
-
-<div id="summaryResult"></div>
-
+<div class="tool">
+<h3>📝 إنشاء بحث</h3>
+<p>إنشاء بحوث مدرسية</p>
 </div>
 
-
-<div class="card">
-
-<h2>📷 قراءة نص من صورة</h2>
-
-<input type="file" id="imageInput">
-
-<div id="ocrResult"></div>
-
+<div class="tool">
+<h3>✂️ تلخيص النص</h3>
+<p>تلخيص الدروس الطويلة</p>
 </div>
 
+<div class="tool">
+<h3>📄 تلخيص PDF</h3>
+<p>رفع ملف وتلخيصه</p>
+</div>
 
-<div class="card">
-
-<h2>📄 تلخيص PDF</h2>
-
-<input type="file" id="pdfInput">
-
-<div id="pdfResult"></div>
+<div class="tool">
+<h3>📚 شرح الدروس</h3>
+<p>شرح أي درس بسهولة</p>
+</div>
 
 </div>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
+<footer>
 
-<script>
+© DZStudy AI
 
-async function askAI(prompt){
-
-let url="https://text.pollinations.ai/"+encodeURIComponent(prompt)
-
-let res=await fetch(url)
-
-let text=await res.text()
-
-return text
-
-}
-
-async function sendChat(){
-
-let input=document.getElementById("chatInput")
-let chat=document.getElementById("chat")
-
-let msg=input.value
-
-if(!msg)return
-
-chat.innerHTML+=`<div class="msg user">${msg}</div>`
-
-input.value=""
-
-let reply=await askAI(msg)
-
-chat.innerHTML+=`<div class="msg ai">${reply}</div>`
-
-chat.scrollTop=chat.scrollHeight
-
-}
-
-async function research(){
-
-let topic=document.getElementById("topic").value
-
-let box=document.getElementById("researchResult")
-
-box.innerText="جاري الإنشاء..."
-
-let result=await askAI("اكتب بحثا بمقدمة وعرض وخاتمة حول "+topic)
-
-box.innerText=result
-
-}
-
-async function summarize(){
-
-let text=document.getElementById("text").value
-
-let box=document.getElementById("summaryResult")
-
-box.innerText="جاري التلخيص..."
-
-let result=await askAI("لخص النص التالي:\n"+text)
-
-box.innerText=result
-
-}
-
-function voice(){
-
-const recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)()
-
-recognition.lang="ar"
-
-recognition.start()
-
-recognition.onresult=function(e){
-
-document.getElementById("chatInput").value=e.results[0][0].transcript
-
-}
-
-}
-
-document.getElementById("imageInput").addEventListener("change",async function(){
-
-let file=this.files[0]
-
-let result=document.getElementById("ocrResult")
-
-result.innerText="جاري القراءة..."
-
-const {data:{text}}=await Tesseract.recognize(file,'ara+eng')
-
-result.innerText=text
-
-})
-
-document.getElementById("pdfInput").addEventListener("change",async function(){
-
-let file=this.files[0]
-
-let result=document.getElementById("pdfResult")
-
-result.innerText="جاري قراءة PDF..."
-
-let reader=new FileReader()
-
-reader.onload=async function(){
-
-let typed=new Uint8Array(this.result)
-
-let pdf=await pdfjsLib.getDocument(typed).promise
-
-let text=""
-
-for(let i=1;i<=pdf.numPages;i++){
-
-let page=await pdf.getPage(i)
-
-let content=await page.getTextContent()
-
-text+=content.items.map(s=>s.str).join(" ")
-
-}
-
-let summary=await askAI("لخص النص التالي:\n"+text)
-
-result.innerText=summary
-
-}
-
-reader.readAsArrayBuffer(file)
-
-})
-
-</script>
+</footer>
 
 </body>
 </html>
