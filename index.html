@@ -74,7 +74,7 @@ min-height:50px;
 <header>
 
 <h1>DZStudy AI</h1>
-<p>مساعدة الطلبة الجزائريين في الدراسة والبحوث</p>
+<p>مساعدة الطلبة الجزائريين بالذكاء الاصطناعي</p>
 
 </header>
 
@@ -86,7 +86,7 @@ min-height:50px;
 
 <input id="topic" placeholder="اكتب موضوع البحث">
 
-<button onclick="createResearch()">إنشاء البحث</button>
+<button onclick="generateResearch()">إنشاء البحث</button>
 
 <div id="researchResult" class="result"></div>
 
@@ -99,7 +99,7 @@ min-height:50px;
 
 <textarea id="text" rows="5" placeholder="ضع النص هنا"></textarea>
 
-<button onclick="summarize()">تلخيص</button>
+<button onclick="summarizeText()">تلخيص</button>
 
 <div id="summaryResult" class="result"></div>
 
@@ -123,7 +123,37 @@ min-height:50px;
 
 <script>
 
-function createResearch(){
+const API_URL="https://api-inference.huggingface.co/models/google/flan-t5-large";
+
+const API_TOKEN="hI_PPmXjzmkhzCGAgbyzzSBAKLoReRAEIzpPc";
+
+
+async function askAI(prompt){
+
+const response=await fetch(API_URL,{
+
+method:"POST",
+
+headers:{
+"Authorization":"Bearer "+API_TOKEN,
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+inputs:prompt
+})
+
+})
+
+const data=await response.json()
+
+return data[0].generated_text
+
+}
+
+
+
+async function generateResearch(){
 
 let topic=document.getElementById("topic").value
 
@@ -131,23 +161,17 @@ let result=document.getElementById("researchResult")
 
 result.innerText="جاري إنشاء البحث..."
 
-setTimeout(()=>{
+let prompt="اكتب بحثا كاملا مع مقدمة وعرض وخاتمة عن "+topic
 
-result.innerText=
-"مقدمة:\n"+
-"يعد موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
-"العرض:\n"+
-"يتعلق "+topic+" بالعديد من الجوانب العلمية والاجتماعية ويؤثر بشكل كبير في تطور المجتمع.\n\n"+
-"الخاتمة:\n"+
-"في النهاية يمكن القول أن "+topic+" يلعب دورًا مهمًا في تقدم المجتمعات."
+let ai=await askAI(prompt)
 
-},1500)
+result.innerText=ai
 
 }
 
 
 
-function summarize(){
+async function summarizeText(){
 
 let text=document.getElementById("text").value
 
@@ -155,32 +179,29 @@ let result=document.getElementById("summaryResult")
 
 result.innerText="جاري التلخيص..."
 
-setTimeout(()=>{
+let prompt="لخص النص التالي: "+text
 
-result.innerText=text.substring(0,200)+" ..."
+let ai=await askAI(prompt)
 
-},1000)
+result.innerText=ai
 
 }
 
 
 
-function solveQuestion(){
+async function solveQuestion(){
 
 let question=document.getElementById("question").value
 
 let result=document.getElementById("answerResult")
 
-result.innerText="جاري حل السؤال..."
+result.innerText="جاري الحل..."
 
-setTimeout(()=>{
+let prompt="حل السؤال التالي واشرحه: "+question
 
-result.innerText=
-"تحليل السؤال:\n"+question+
-"\n\nالحل:\n"+
-"لحل هذا السؤال يجب تحليل المعطيات واستعمال القواعد المناسبة."
+let ai=await askAI(prompt)
 
-},1200)
+result.innerText=ai
 
 }
 
