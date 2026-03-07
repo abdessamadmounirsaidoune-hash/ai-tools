@@ -2,19 +2,20 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DZStudy AI</title>
 
 <style>
+
 body{
 font-family:Arial;
+background:#f4f6fb;
 margin:0;
-background:#f5f7fb;
 direction:rtl;
 }
 
 header{
-background:linear-gradient(135deg,#2563eb,#1e3a8a);
+background:linear-gradient(135deg,#1e40af,#2563eb);
 color:white;
 padding:40px;
 text-align:center;
@@ -31,15 +32,15 @@ background:white;
 padding:25px;
 margin:20px 0;
 border-radius:12px;
-box-shadow:0 8px 20px rgba(0,0,0,0.1);
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 input,textarea{
-width:95%;
+width:100%;
 padding:12px;
-margin:10px 0;
 border-radius:8px;
 border:1px solid #ccc;
+margin:10px 0;
 font-size:16px;
 }
 
@@ -47,9 +48,10 @@ button{
 background:#2563eb;
 color:white;
 border:none;
-padding:12px 18px;
+padding:12px 20px;
 border-radius:8px;
 cursor:pointer;
+font-size:16px;
 }
 
 .result{
@@ -59,6 +61,7 @@ padding:15px;
 border-radius:8px;
 white-space:pre-line;
 }
+
 </style>
 
 </head>
@@ -76,9 +79,9 @@ white-space:pre-line;
 
 <h2>إنشاء بحث</h2>
 
-<input id="researchTopic" placeholder="اكتب موضوع البحث">
+<input id="topic" placeholder="اكتب موضوع البحث">
 
-<button onclick="generateResearch()">إنشاء البحث</button>
+<button onclick="createResearch()">إنشاء البحث</button>
 
 <div id="researchResult" class="result"></div>
 
@@ -89,9 +92,9 @@ white-space:pre-line;
 
 <h2>تلخيص النصوص</h2>
 
-<textarea id="summaryText" rows="5"></textarea>
+<textarea id="text" rows="5" placeholder="ضع النص هنا"></textarea>
 
-<button onclick="summarizeText()">تلخيص</button>
+<button onclick="summarize()">تلخيص</button>
 
 <div id="summaryResult" class="result"></div>
 
@@ -102,11 +105,11 @@ white-space:pre-line;
 
 <h2>حل سؤال</h2>
 
-<textarea id="questionText" rows="4"></textarea>
+<textarea id="question" rows="4" placeholder="اكتب السؤال"></textarea>
 
-<button onclick="solveQuestion()">حل السؤال</button>
+<button onclick="solve()">حل السؤال</button>
 
-<div id="questionResult" class="result"></div>
+<div id="answerResult" class="result"></div>
 
 </div>
 
@@ -114,62 +117,64 @@ white-space:pre-line;
 
 <script>
 
-function generateResearch(){
+function createResearch(){
 
-let topic=document.getElementById("researchTopic").value;
+let topic=document.getElementById("topic").value
 
-let result=document.getElementById("researchResult");
+let result=document.getElementById("researchResult")
 
-result.innerText="جاري إنشاء البحث...";
+result.innerText="جاري إنشاء البحث..."
 
 setTimeout(()=>{
 
 result.innerText=
 "مقدمة:\n"+
-"يعد موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
-"الشرح:\n"+
-"يؤثر "+topic+" في العديد من المجالات مثل الاقتصاد والمجتمع والتكنولوجيا.\n\n"+
+"يعتبر موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
+"العرض:\n"+
+"يتعلق "+topic+" بعدة مجالات علمية واجتماعية ويؤثر بشكل كبير في المجتمع.\n\n"+
 "الخاتمة:\n"+
-"يمكن القول إن "+topic+" له دور كبير في تطوير المجتمعات.";
+"في النهاية يمكن القول أن "+topic+" يلعب دورًا مهمًا في تطور المجتمعات."
 
-},1500)
+},1200)
 
 }
 
 
-function summarizeText(){
 
-let text=document.getElementById("summaryText").value;
+function summarize(){
 
-let result=document.getElementById("summaryResult");
+let text=document.getElementById("text").value
 
-result.innerText="جاري التلخيص...";
+let result=document.getElementById("summaryResult")
+
+result.innerText="جاري التلخيص..."
 
 setTimeout(()=>{
 
-result.innerText=text.substring(0,200)+" ...";
+result.innerText=text.substring(0,200)+" ..."
 
 },1000)
 
 }
 
 
-function solveQuestion(){
 
-let q=document.getElementById("questionText").value;
+function solve(){
 
-let result=document.getElementById("questionResult");
+let question=document.getElementById("question").value
 
-result.innerText="جاري الحل...";
+let result=document.getElementById("answerResult")
+
+result.innerText="جاري حل السؤال..."
 
 setTimeout(()=>{
 
 result.innerText=
-"تحليل السؤال:\n"+q+
-"\n\nالحل المقترح:\n"+
-"يمكن حل هذا السؤال باتباع الخطوات المناسبة وتحليل المعطيات.";
+"تحليل السؤال:\n"+question+
+"\n\nالحل:\n"+
+"لحل هذا السؤال يجب تحليل المعطيات واستخدام القواعد العلمية المناسبة."
 
-},1500)
+},1000)
 
 }
 
