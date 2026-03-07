@@ -1,46 +1,31 @@
-async function askAI(){
+const API_URL = "https://idoune.workers.dev/";
 
-let question =
-document.getElementById("question").value;
+async function askAI(question, resultElement) {
 
-let answer =
-document.getElementById("answer");
+resultElement.innerText = "جاري التفكير...";
 
-if(answer){
-answer.innerText="جاري التفكير...";
-}
+try {
 
-try{
-
-let response = await fetch(
-"https://cold-mountain-df10.abdessamadmounirsaidoune.workers.dev",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
+const response = await fetch(API_URL, {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
 },
-body:JSON.stringify({
-model:"openai/gpt-3.5-turbo",
-messages:[
-{role:"user",content:question}
-]
+body: JSON.stringify({
+message: question
 })
-}
-);
+});
 
-let data = await response.json();
+const data = await response.json();
 
-if(answer){
-answer.innerText =
-data.choices[0].message.content;
-}
-
-}catch{
-
-if(answer){
-answer.innerText="حدث خطأ في الاتصال";
+if(data.answer){
+resultElement.innerText = data.answer;
+}else{
+resultElement.innerText = "لم يتم العثور على جواب";
 }
 
+} catch (error) {
+resultElement.innerText = "حدث خطأ في الاتصال";
 }
 
 }
