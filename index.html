@@ -3,280 +3,227 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>DZStudy | منصة الطالب الذكية</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>DZStudy AI</title>
 
 <style>
 
 body{
 font-family:Arial;
+background:#f5f7fb;
 margin:0;
-background:#f1f5f9;
+text-align:center;
 direction:rtl;
-}
-
-nav{
-background:#1e3a8a;
-color:white;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 25px;
-}
-
-nav h2{
-margin:0;
-}
-
-nav button{
-background:white;
-color:#1e3a8a;
-border:none;
-padding:8px 15px;
-border-radius:6px;
-cursor:pointer;
 }
 
 header{
 background:linear-gradient(135deg,#2563eb,#1e40af);
 color:white;
-text-align:center;
-padding:50px 20px;
+padding:30px;
 }
 
 .container{
-max-width:1000px;
+max-width:900px;
 margin:auto;
 padding:20px;
 }
 
 .card{
 background:white;
-padding:25px;
+padding:20px;
 margin:20px 0;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-}
-
-.icon{
-font-size:28px;
-color:#2563eb;
-margin-bottom:10px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
 input,textarea{
-width:95%;
-padding:12px;
-margin:10px 0;
-border-radius:8px;
-border:1px solid #ccc;
+width:90%;
+padding:10px;
+margin:10px;
 font-size:16px;
+border-radius:6px;
+border:1px solid #ccc;
 }
 
-button.main{
+button{
 background:#2563eb;
 color:white;
 border:none;
-padding:12px 18px;
-border-radius:8px;
+padding:10px 20px;
+border-radius:6px;
 cursor:pointer;
-}
-
-button.main:hover{
-background:#1e3a8a;
 }
 
 .result{
 margin-top:10px;
-background:#f8fafc;
-padding:15px;
-border-radius:8px;
 white-space:pre-line;
-}
-
-footer{
-text-align:center;
-padding:20px;
-color:#777;
+background:#f1f5f9;
+padding:10px;
+border-radius:6px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<nav>
-
-<h2>DZStudy</h2>
-
-<div>
-<button>تسجيل الدخول</button>
-<button>إنشاء حساب</button>
-</div>
-
-</nav>
-
 <header>
 
-<h1>منصة DZStudy</h1>
-<p>مساعدة الطلبة الجزائريين في الدراسة والبحوث</p>
+<h1>DZStudy AI</h1>
+<p>مساعد الطلبة الجزائريين بالذكاء الاصطناعي</p>
 
 </header>
 
 <div class="container">
 
 
-<!-- إنشاء بحث -->
-
 <div class="card">
-
-<div class="icon"><i class="fa-solid fa-lightbulb"></i></div>
 
 <h2>إنشاء بحث</h2>
 
 <input id="researchTopic" placeholder="اكتب موضوع البحث">
 
-<input type="file" accept="image/*">
-
-<button class="main" onclick="generateResearch()">إنشاء البحث</button>
+<button onclick="generateResearch()">إنشاء البحث</button>
 
 <div id="researchResult" class="result"></div>
 
 </div>
 
 
-<!-- تلخيص -->
 
 <div class="card">
 
-<div class="icon"><i class="fa-solid fa-file-lines"></i></div>
+<h2>تلخيص النصوص</h2>
 
-<h2>تلخيص النصوص والبحوث</h2>
+<textarea id="summaryText" placeholder="ضع النص هنا"></textarea>
 
-<textarea id="summaryText" rows="5" placeholder="ضع النص هنا"></textarea>
-
-<input type="file" accept="image/*">
-
-<button class="main" onclick="summarizeText()">تلخيص</button>
+<button onclick="summarizeText()">تلخيص</button>
 
 <div id="summaryResult" class="result"></div>
 
 </div>
 
 
-<!-- حل الواجبات -->
 
 <div class="card">
 
-<div class="icon"><i class="fa-solid fa-book"></i></div>
+<h2>حل سؤال</h2>
 
-<h2>حل الواجبات والأسئلة</h2>
+<textarea id="questionText" placeholder="اكتب السؤال"></textarea>
 
-<textarea id="questionText" rows="4" placeholder="اكتب السؤال"></textarea>
-
-<input type="file" accept="image/*">
-
-<button class="main" onclick="solveQuestion()">حل السؤال</button>
+<button onclick="solveQuestion()">حل السؤال</button>
 
 <div id="questionResult" class="result"></div>
 
 </div>
 
 
-<!-- إنشاء بحث آخر -->
-
-<div class="card">
-
-<div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
-
-<h2>إنشاء بحث متقدم</h2>
-
-<input id="researchTopic2" placeholder="اكتب موضوع البحث">
-
-<input type="file" accept="image/*">
-
-<button class="main" onclick="generateResearch2()">إنشاء</button>
-
-<div id="researchResult2" class="result"></div>
-
 </div>
-
-
-<!-- تحويل الصوت -->
-
-<div class="card">
-
-<div class="icon"><i class="fa-solid fa-microphone"></i></div>
-
-<h2>تحويل الصوت إلى كتابة</h2>
-
-<button class="main" onclick="startVoice()">ابدأ التسجيل</button>
-
-<textarea id="voiceResult" rows="3" placeholder="سيظهر النص هنا"></textarea>
-
-</div>
-
-
-</div>
-
-<footer>
-
-DZStudy 2026
-
-</footer>
 
 <script>
 
-function generateResearch(){
+let API_KEY = localStorage.getItem("HF_KEY");
+
+if(!API_KEY){
+
+API_KEY = prompt("ضع مفتاح HuggingFace API");
+
+localStorage.setItem("HF_KEY",API_KEY);
+
+}
+
+
+
+async function generateResearch(){
 
 let topic=document.getElementById("researchTopic").value;
 
-document.getElementById("researchResult").innerText=
-"مقدمة حول "+topic+"\n\nمشكلة البحث\n\nأهداف البحث\n\nالخاتمة.";
+document.getElementById("researchResult").innerText="جاري إنشاء البحث...";
+
+let response=await fetch(
+"https://api-inference.huggingface.co/models/google/flan-t5-large",
+{
+
+method:"POST",
+
+headers:{
+"Authorization":"Bearer "+API_KEY,
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+inputs:"اكتب بحثا دراسيا كاملا عن "+topic
+})
+
+});
+
+let data=await response.json();
+
+document.getElementById("researchResult").innerText=data[0].generated_text;
 
 }
 
-function summarizeText(){
+
+
+async function summarizeText(){
 
 let text=document.getElementById("summaryText").value;
 
-document.getElementById("summaryResult").innerText=text.substring(0,200)+"...";
+document.getElementById("summaryResult").innerText="جاري التلخيص...";
+
+let response=await fetch(
+"https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
+{
+
+method:"POST",
+
+headers:{
+"Authorization":"Bearer "+API_KEY,
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+inputs:text
+})
+
+});
+
+let data=await response.json();
+
+document.getElementById("summaryResult").innerText=data[0].summary_text;
 
 }
 
-function solveQuestion(){
+
+
+async function solveQuestion(){
 
 let q=document.getElementById("questionText").value;
 
-document.getElementById("questionResult").innerText="تحليل السؤال:\n"+q+"\n\nالحل المقترح...";
+document.getElementById("questionResult").innerText="جاري الحل...";
 
-}
+let response=await fetch(
+"https://api-inference.huggingface.co/models/google/flan-t5-large",
+{
 
-function generateResearch2(){
+method:"POST",
 
-let topic=document.getElementById("researchTopic2").value;
+headers:{
+"Authorization":"Bearer "+API_KEY,
+"Content-Type":"application/json"
+},
 
-document.getElementById("researchResult2").innerText=
-"بحث متقدم حول "+topic+"\n\nمقدمة\n\nتحليل\n\nخاتمة.";
+body:JSON.stringify({
+inputs:"حل السؤال التالي واشرحه: "+q
+})
 
-}
+});
 
-function startVoice(){
+let data=await response.json();
 
-let recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
-
-recognition.lang="ar";
-
-recognition.start();
-
-recognition.onresult=function(event){
-
-document.getElementById("voiceResult").value=event.results[0][0].transcript;
-
-}
+document.getElementById("questionResult").innerText=data[0].generated_text;
 
 }
 
