@@ -1,32 +1,27 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>DZStudy AI</title>
 
-<meta name="description" content="منصة ذكاء اصطناعي لمساعدة الطلاب الجزائريين">
-
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
+<link rel="stylesheet" href="style.css">
 
 <style>
 
 body{
-font-family:system-ui;
+font-family: Arial;
 margin:0;
-background:#f4f6fb;
-direction:rtl;
+background:#f5f7fb;
 }
 
 header{
-background:linear-gradient(135deg,#2f63ff,#4c7cff);
+background:linear-gradient(135deg,#3b6cff,#6b8cff);
 color:white;
 text-align:center;
-padding:60px 20px;
+padding:50px 20px;
 }
 
 header h1{
@@ -35,13 +30,15 @@ font-size:40px;
 }
 
 header p{
-opacity:0.9;
+margin-top:10px;
+font-size:18px;
+opacity:.9;
 }
 
 .container{
 max-width:1000px;
 margin:auto;
-padding:30px;
+padding:40px 20px;
 }
 
 .tools{
@@ -50,61 +47,39 @@ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
-.tool{
+.card{
 background:white;
-padding:25px;
-border-radius:15px;
+padding:30px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
 text-align:center;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
 cursor:pointer;
+transition:.3s;
 }
 
-.section{
-background:white;
-padding:25px;
-border-radius:15px;
-margin-top:40px;
-box-shadow:0 8px 25px rgba(0,0,0,0.08);
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 15px 35px rgba(0,0,0,.12);
 }
 
-input,textarea{
-width:100%;
-padding:12px;
-border-radius:10px;
-border:1px solid #ccc;
-margin-top:10px;
+.card h3{
+margin:10px 0;
+font-size:20px;
 }
 
-button{
-background:#2f63ff;
-color:white;
-border:none;
-padding:10px 20px;
-border-radius:10px;
-margin-top:10px;
-cursor:pointer;
+.card p{
+font-size:14px;
+color:#666;
 }
 
-.chat{
-height:250px;
-overflow:auto;
-background:#eef2fa;
-padding:10px;
-border-radius:10px;
+.icon{
+font-size:35px;
 }
 
-.msg{
-margin-bottom:10px;
-padding:8px;
-border-radius:8px;
-}
-
-.user{
-background:#dce6ff;
-}
-
-.ai{
-background:white;
+footer{
+text-align:center;
+padding:30px;
+color:#777;
 }
 
 .dark{
@@ -112,19 +87,24 @@ background:#121212;
 color:white;
 }
 
-.dark .tool,
-.dark .section{
+.dark .card{
 background:#1e1e1e;
+color:white;
 }
 
-footer{
-text-align:center;
-padding:40px;
-color:#888;
+.toggle{
+position:fixed;
+left:20px;
+bottom:20px;
+background:#3b6cff;
+color:white;
+border:none;
+padding:12px 18px;
+border-radius:30px;
+cursor:pointer;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -133,117 +113,45 @@ color:#888;
 
 <h1>DZStudy AI</h1>
 
-<p>منصة ذكاء اصطناعي لمساعدة الطلاب الجزائريين</p>
-
-<button onclick="toggleDark()">🌙 الوضع الليلي</button>
+<p>منصة ذكاء اصطناعي لمساعدة الطلاب الجزائريين في الدراسة</p>
 
 </header>
 
 <div class="container">
 
-<h2 style="text-align:center">الأدوات</h2>
+<h2 style="text-align:center;margin-bottom:30px;">الأدوات</h2>
 
 <div class="tools">
 
-<div class="tool" onclick="go('chat')">
-💬 الدردشة الذكية
+<div class="card" onclick="go('chat.html')">
+<div class="icon">💬</div>
+<h3>الدردشة الذكية</h3>
+<p>اسأل أي سؤال دراسي</p>
 </div>
 
-<div class="tool" onclick="go('research')">
-📝 إنشاء بحث
+<div class="card" onclick="go('research.html')">
+<div class="icon">📝</div>
+<h3>إنشاء بحث</h3>
+<p>إنشاء بحوث مدرسية</p>
 </div>
 
-<div class="tool" onclick="go('summary')">
-✂️ تلخيص النص
+<div class="card" onclick="go('summary.html')">
+<div class="icon">✂️</div>
+<h3>تلخيص النص</h3>
+<p>تلخيص الدروس الطويلة</p>
 </div>
 
-<div class="tool" onclick="go('exercise')">
-📷 حل التمارين
+<div class="card" onclick="go('exercise.html')">
+<div class="icon">📷</div>
+<h3>حل التمارين</h3>
+<p>رفع صورة التمرين</p>
 </div>
 
-<div class="tool" onclick="go('pdf')">
-📄 تلخيص PDF
+<div class="card" onclick="go('lesson.html')">
+<div class="icon">📚</div>
+<h3>شرح الدروس</h3>
+<p>شرح أي درس بسهولة</p>
 </div>
-
-<div class="tool" onclick="go('lesson')">
-📚 شرح الدروس
-</div>
-
-</div>
-
-
-<div class="section" id="chat">
-
-<h2>💬 الدردشة</h2>
-
-<div class="chat" id="chatBox"></div>
-
-<input id="chatInput" placeholder="اكتب سؤالك">
-
-<button onclick="sendChat()">إرسال</button>
-
-</div>
-
-
-<div class="section" id="research">
-
-<h2>📝 إنشاء بحث</h2>
-
-<input id="topic" placeholder="موضوع البحث">
-
-<button onclick="createResearch()">إنشاء</button>
-
-<div id="researchResult"></div>
-
-</div>
-
-
-<div class="section" id="summary">
-
-<h2>✂️ تلخيص النص</h2>
-
-<textarea id="text" rows="5"></textarea>
-
-<button onclick="summarize()">تلخيص</button>
-
-<div id="summaryResult"></div>
-
-</div>
-
-
-<div class="section" id="exercise">
-
-<h2>📷 حل التمارين من صورة</h2>
-
-<input type="file" id="exerciseImage">
-
-<button onclick="solveExercise()">حل التمرين</button>
-
-<div id="exerciseResult"></div>
-
-</div>
-
-
-<div class="section" id="pdf">
-
-<h2>📄 تلخيص PDF</h2>
-
-<input type="file" id="pdfInput">
-
-<div id="pdfResult"></div>
-
-</div>
-
-
-<div class="section" id="lesson">
-
-<h2>📚 شرح درس</h2>
-
-<input id="lessonInput" placeholder="اكتب اسم الدرس">
-
-<button onclick="explainLesson()">شرح</button>
-
-<div id="lessonResult"></div>
 
 </div>
 
@@ -251,141 +159,28 @@ color:#888;
 
 <footer>
 
-DZStudy AI ©
+© DZStudy AI
 
 </footer>
 
+<button class="toggle" onclick="toggleDark()">🌙 الوضع الليلي</button>
+
 <script>
 
-function go(id){
-document.getElementById(id).scrollIntoView({behavior:"smooth"})
+function go(page){
+
+window.location.href=page
+
 }
 
 function toggleDark(){
+
 document.body.classList.toggle("dark")
-}
-
-async function askAI(prompt){
-
-let url="https://text.pollinations.ai/"+encodeURIComponent(prompt)
-
-let r=await fetch(url)
-
-return await r.text()
 
 }
-
-async function sendChat(){
-
-let input=document.getElementById("chatInput")
-let chat=document.getElementById("chatBox")
-
-let msg=input.value
-
-if(!msg)return
-
-chat.innerHTML+=`<div class="msg user">${msg}</div>`
-
-input.value=""
-
-let reply=await askAI(msg)
-
-chat.innerHTML+=`<div class="msg ai">${reply}</div>`
-
-chat.scrollTop=chat.scrollHeight
-
-}
-
-async function createResearch(){
-
-let topic=document.getElementById("topic").value
-
-document.getElementById("researchResult").innerText="جاري الإنشاء..."
-
-let result=await askAI("اكتب بحثا بمقدمة وعرض وخاتمة حول "+topic)
-
-document.getElementById("researchResult").innerText=result
-
-}
-
-async function summarize(){
-
-let text=document.getElementById("text").value
-
-document.getElementById("summaryResult").innerText="جاري التلخيص..."
-
-let result=await askAI("لخص النص التالي:\n"+text)
-
-document.getElementById("summaryResult").innerText=result
-
-}
-
-async function explainLesson(){
-
-let lesson=document.getElementById("lessonInput").value
-
-document.getElementById("lessonResult").innerText="جاري الشرح..."
-
-let result=await askAI("اشرح الدرس التالي بطريقة بسيطة:\n"+lesson)
-
-document.getElementById("lessonResult").innerText=result
-
-}
-
-async function solveExercise(){
-
-let file=document.getElementById("exerciseImage").files[0]
-
-let result=document.getElementById("exerciseResult")
-
-result.innerText="جاري قراءة التمرين..."
-
-const { data:{ text } } =
-await Tesseract.recognize(file,'ara+eng')
-
-result.innerText="جاري الحل..."
-
-let answer=await askAI("حل التمرين التالي مع الشرح:\n"+text)
-
-result.innerText=answer
-
-}
-
-document.getElementById("pdfInput").addEventListener("change",async function(){
-
-let file=this.files[0]
-
-let reader=new FileReader()
-
-reader.onload=async function(){
-
-let typed=new Uint8Array(this.result)
-
-let pdf=await pdfjsLib.getDocument(typed).promise
-
-let text=""
-
-for(let i=1;i<=pdf.numPages;i++){
-
-let page=await pdf.getPage(i)
-
-let content=await page.getTextContent()
-
-text+=content.items.map(s=>s.str).join(" ")
-
-}
-
-let summary=await askAI("لخص النص التالي:\n"+text)
-
-document.getElementById("pdfResult").innerText=summary
-
-}
-
-reader.readAsArrayBuffer(file)
-
-})
 
 </script>
 
 </body>
+
 </html>
