@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>DZStudy AI</title>
 
@@ -11,16 +11,16 @@
 
 body{
 font-family:Arial;
-background:#f5f7fb;
 margin:0;
-text-align:center;
+background:#f4f6fb;
 direction:rtl;
 }
 
 header{
-background:linear-gradient(135deg,#2563eb,#1e40af);
+background:linear-gradient(135deg,#2563eb,#1e3a8a);
 color:white;
-padding:30px;
+padding:40px;
+text-align:center;
 }
 
 .container{
@@ -31,36 +31,40 @@ padding:20px;
 
 .card{
 background:white;
-padding:20px;
+padding:25px;
 margin:20px 0;
-border-radius:10px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
 input,textarea{
-width:90%;
-padding:10px;
-margin:10px;
-font-size:16px;
-border-radius:6px;
+width:95%;
+padding:12px;
+margin:10px 0;
+border-radius:8px;
 border:1px solid #ccc;
+font-size:16px;
 }
 
 button{
 background:#2563eb;
 color:white;
 border:none;
-padding:10px 20px;
-border-radius:6px;
+padding:12px 18px;
+border-radius:8px;
 cursor:pointer;
 }
 
+button:hover{
+background:#1e40af;
+}
+
 .result{
-margin-top:10px;
-white-space:pre-line;
+margin-top:15px;
 background:#f1f5f9;
-padding:10px;
-border-radius:6px;
+padding:15px;
+border-radius:8px;
+white-space:pre-line;
 }
 
 </style>
@@ -71,8 +75,8 @@ border-radius:6px;
 
 <header>
 
-<h1>DZStudy AI</h1>
-<p>مساعد الطلبة الجزائريين بالذكاء الاصطناعي</p>
+<h1>DZStudy</h1>
+<p>مساعدة الطلبة الجزائريين بالذكاء الاصطناعي</p>
 
 </header>
 
@@ -92,12 +96,11 @@ border-radius:6px;
 </div>
 
 
-
 <div class="card">
 
 <h2>تلخيص النصوص</h2>
 
-<textarea id="summaryText" placeholder="ضع النص هنا"></textarea>
+<textarea id="summaryText" rows="5" placeholder="ضع النص هنا"></textarea>
 
 <button onclick="summarizeText()">تلخيص</button>
 
@@ -106,12 +109,11 @@ border-radius:6px;
 </div>
 
 
-
 <div class="card">
 
 <h2>حل سؤال</h2>
 
-<textarea id="questionText" placeholder="اكتب السؤال"></textarea>
+<textarea id="questionText" rows="4" placeholder="اكتب السؤال"></textarea>
 
 <button onclick="solveQuestion()">حل السؤال</button>
 
@@ -124,6 +126,7 @@ border-radius:6px;
 
 <script>
 
+
 let API_KEY = localStorage.getItem("HF_KEY");
 
 if(!API_KEY){
@@ -133,7 +136,6 @@ API_KEY = prompt("ضع مفتاح HuggingFace API");
 localStorage.setItem("HF_KEY",API_KEY);
 
 }
-
 
 
 async function generateResearch(){
