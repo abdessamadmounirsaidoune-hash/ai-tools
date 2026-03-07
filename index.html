@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ar">
-
 <head>
 
 <meta charset="UTF-8">
@@ -8,42 +7,44 @@
 
 <title>DZStudy | مساعد الطلبة الجزائريين</title>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 
 body{
 font-family:Arial;
-background:#f4f6fb;
 margin:0;
+background:#f4f6fb;
 text-align:center;
 }
 
 header{
-background:#2563eb;
+background:linear-gradient(135deg,#2563eb,#1e3a8a);
 color:white;
-padding:25px;
+padding:30px;
 }
 
 .container{
 max-width:900px;
 margin:auto;
-padding:30px;
+padding:20px;
 }
 
 .card{
 background:white;
 padding:25px;
 margin:20px;
-border-radius:10px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
 
 input,textarea{
 width:90%;
 padding:12px;
-font-size:16px;
 margin:10px;
-border-radius:6px;
-border:1px solid #ccc;
+border-radius:8px;
+border:1px solid #ddd;
+font-size:16px;
 }
 
 button{
@@ -52,7 +53,7 @@ color:white;
 border:none;
 padding:12px 20px;
 font-size:16px;
-border-radius:6px;
+border-radius:8px;
 cursor:pointer;
 }
 
@@ -60,10 +61,16 @@ button:hover{
 background:#1e40af;
 }
 
+.icon{
+font-size:25px;
+color:#2563eb;
+margin-bottom:10px;
+}
+
 .result{
 margin-top:15px;
-white-space:pre-line;
 font-size:17px;
+white-space:pre-line;
 }
 
 footer{
@@ -80,14 +87,17 @@ color:#777;
 <header>
 
 <h1>DZStudy</h1>
-
-<p>موقع يساعد الطلبة الجزائريين في البحوث والواجبات</p>
+<p>مساعد الطلبة الجزائريين في البحوث والواجبات</p>
 
 </header>
 
 <div class="container">
 
+<!-- توليد بحث -->
+
 <div class="card">
+
+<div class="icon"><i class="fa-solid fa-lightbulb"></i></div>
 
 <h2>إنشاء فكرة بحث</h2>
 
@@ -95,13 +105,18 @@ color:#777;
 
 <br>
 
-<button onclick="generate()">توليد فكرة</button>
+<button onclick="generateResearch()">توليد فكرة</button>
 
 <div id="research" class="result"></div>
 
 </div>
 
+
+<!-- تلخيص -->
+
 <div class="card">
+
+<div class="icon"><i class="fa-solid fa-file-lines"></i></div>
 
 <h2>تلخيص النصوص</h2>
 
@@ -115,6 +130,56 @@ color:#777;
 
 </div>
 
+
+<!-- شرح درس -->
+
+<div class="card">
+
+<div class="icon"><i class="fa-solid fa-book"></i></div>
+
+<h2>شرح درس</h2>
+
+<input id="lesson" placeholder="مثال: قانون أوم">
+
+<br>
+
+<button onclick="explain()">شرح</button>
+
+<div id="explain" class="result"></div>
+
+</div>
+
+
+<!-- رفع صورة -->
+
+<div class="card">
+
+<div class="icon"><i class="fa-solid fa-image"></i></div>
+
+<h2>إرسال صورة واجب</h2>
+
+<input type="file" accept="image/*">
+
+<p>يمكنك إرسال صورة تمرين أو واجب.</p>
+
+</div>
+
+
+<!-- تحويل الصوت -->
+
+<div class="card">
+
+<div class="icon"><i class="fa-solid fa-microphone"></i></div>
+
+<h2>تحويل الصوت إلى كتابة</h2>
+
+<button onclick="startVoice()">ابدأ التسجيل</button>
+
+<textarea id="voiceText" rows="4" placeholder="سيظهر النص هنا"></textarea>
+
+</div>
+
+
 </div>
 
 <footer>
@@ -125,14 +190,22 @@ DZStudy 2026
 
 <script>
 
-function generate(){
+function generateResearch(){
 
 let topic=document.getElementById("topic").value;
 
-let result="مقدمة:\nيعد موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
-"مشكلة البحث:\nما أهمية "+topic+" وتأثيره على المجتمع؟\n\n"+
-"الأهداف:\n- فهم مفهوم "+topic+"\n- دراسة تأثيره\n- اقتراح حلول.\n\n"+
-"الخاتمة:\nيمثل "+topic+" مجالا مهما للدراسة.";
+let result=
+
+"مقدمة:\n"+
+"يعد موضوع "+topic+" من المواضيع المهمة في العصر الحديث.\n\n"+
+"مشكلة البحث:\n"+
+"ما أهمية "+topic+" وتأثيره على المجتمع؟\n\n"+
+"الأهداف:\n"+
+"- فهم مفهوم "+topic+"\n"+
+"- دراسة تأثيره\n"+
+"- اقتراح حلول.\n\n"+
+"الخاتمة:\n"+
+"يمثل "+topic+" مجالا مهما للدراسة.";
 
 document.getElementById("research").innerText=result;
 
@@ -145,6 +218,37 @@ let text=document.getElementById("text").value;
 let short=text.substring(0,200)+"...";
 
 document.getElementById("summary").innerText=short;
+
+}
+
+function explain(){
+
+let lesson=document.getElementById("lesson").value;
+
+let explain=
+
+"شرح مبسط:\n"+
+lesson+" هو موضوع مهم في الدراسة ويستخدم لفهم العديد من المفاهيم العلمية.\n\n"+
+"لفهمه يجب دراسة المفاهيم الأساسية المرتبطة به.";
+
+document.getElementById("explain").innerText=explain;
+
+}
+
+
+function startVoice(){
+
+let recognition=new(window.SpeechRecognition||window.webkitSpeechRecognition)();
+
+recognition.lang="ar";
+
+recognition.start();
+
+recognition.onresult=function(event){
+
+document.getElementById("voiceText").value=event.results[0][0].transcript;
+
+}
 
 }
 
