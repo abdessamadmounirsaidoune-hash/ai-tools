@@ -9,21 +9,16 @@
 
 body{
 font-family:Arial;
-background:#f2f4fb;
+background:#f3f5fb;
 margin:0;
 direction:rtl;
 }
 
 header{
-background:linear-gradient(135deg,#2f63ff,#1c3fbf);
+background:linear-gradient(135deg,#2f63ff,#1a3dbb);
 color:white;
-text-align:center;
 padding:40px;
-}
-
-header h1{
-margin:0;
-font-size:34px;
+text-align:center;
 }
 
 .container{
@@ -35,9 +30,9 @@ padding:20px;
 .card{
 background:white;
 padding:25px;
-margin-bottom:20px;
 border-radius:12px;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
+margin-bottom:20px;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
 }
 
 input,textarea{
@@ -56,10 +51,6 @@ padding:12px 20px;
 border-radius:8px;
 margin-top:10px;
 cursor:pointer;
-}
-
-button:hover{
-background:#1e47d6;
 }
 
 .result{
@@ -84,22 +75,22 @@ white-space:pre-line;
 
 <div class="card">
 <h2>إنشاء بحث</h2>
-<input id="researchTopic" placeholder="اكتب موضوع البحث">
-<button onclick="generateResearch()">إنشاء البحث</button>
+<input id="topic">
+<button onclick="research()">إنشاء البحث</button>
 <div id="researchResult" class="result"></div>
 </div>
 
 <div class="card">
-<h2>تلخيص النصوص</h2>
-<textarea id="summaryText" rows="4" placeholder="ضع النص هنا"></textarea>
-<button onclick="summarizeText()">تلخيص</button>
+<h2>تلخيص نص</h2>
+<textarea id="text"></textarea>
+<button onclick="summarize()">تلخيص</button>
 <div id="summaryResult" class="result"></div>
 </div>
 
 <div class="card">
 <h2>حل سؤال</h2>
-<input id="questionInput" placeholder="اكتب السؤال">
-<button onclick="solveQuestion()">حل السؤال</button>
+<input id="question">
+<button onclick="answer()">حل السؤال</button>
 <div id="answerResult" class="result"></div>
 </div>
 
@@ -107,80 +98,51 @@ white-space:pre-line;
 
 <script>
 
-const API_KEY="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";
-
 async function askAI(prompt){
 
-const response=await fetch("https://openrouter.ai/api/v1/chat/completions",{
+const url="https://text.pollinations.ai/"+encodeURIComponent(prompt)
 
-method:"POST",
+const response=await fetch(url)
 
-headers:{
-"Authorization":"Bearer "+API_KEY,
-"Content-Type":"application/json"
-},
+const text=await response.text()
 
-body:JSON.stringify({
-
-model:"meta-llama/llama-3-8b-instruct",
-
-messages:[
-{
-role:"user",
-content:prompt
-}
-
-]
-
-})
-
-});
-
-const data=await response.json();
-
-return data.choices[0].message.content;
+return text
 
 }
 
-async function generateResearch(){
+async function research(){
 
-let topic=document.getElementById("researchTopic").value;
+let topic=document.getElementById("topic").value
 
-document.getElementById("researchResult").innerText="جاري إنشاء البحث...";
+document.getElementById("researchResult").innerText="جاري الإنشاء..."
 
-let prompt="اكتب بحثا مدرسيا منظما بمقدمة وعرض وخاتمة حول: "+topic;
+let result=await askAI("اكتب بحثا مدرسيا بمقدمة وعرض وخاتمة حول "+topic)
 
-let result=await askAI(prompt);
-
-document.getElementById("researchResult").innerText=result;
+document.getElementById("researchResult").innerText=result
 
 }
 
-async function summarizeText(){
+async function summarize(){
 
-let text=document.getElementById("summaryText").value;
+let text=document.getElementById("text").value
 
-document.getElementById("summaryResult").innerText="جاري التلخيص...";
+document.getElementById("summaryResult").innerText="جاري التلخيص..."
 
-let prompt="لخص النص التالي:\n"+text;
+let result=await askAI("لخص النص التالي: "+text)
 
-let result=await askAI(prompt);
-
-document.getElementById("summaryResult").innerText=result;
+document.getElementById("summaryResult").innerText=result
 
 }
 
-async function solveQuestion(){
+async function answer(){
 
-let question=document.getElementById("questionInput").value;
+let q=document.getElementById("question").value
 
-document.getElementById("answerResult").innerText="جاري الحل...";
+document.getElementById("answerResult").innerText="جاري الحل..."
 
-let prompt="أجب عن السؤال التالي للطلاب:\n"+question;
+let result=await askAI("أجب عن السؤال التالي للطلاب: "+q)
 
-let result=await askAI(prompt);
-
-document.getElementById("answerResult").innerText=result;
+document.getElementById("answerResult").innerText=result
 
 }
 
