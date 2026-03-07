@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>DZStudy AI</title>
 
 <style>
 
 body{
 font-family:Arial;
+background:#f2f4fb;
 margin:0;
-background:#f4f6fb;
 direction:rtl;
 }
 
 header{
-background:linear-gradient(135deg,#1e40af,#2563eb);
+background:linear-gradient(135deg,#2f63ff,#1c3fbf);
 color:white;
-padding:40px;
 text-align:center;
+padding:40px;
+}
+
+header h1{
+margin:0;
+font-size:34px;
 }
 
 .container{
@@ -32,9 +35,9 @@ padding:20px;
 .card{
 background:white;
 padding:25px;
-margin:20px 0;
+margin-bottom:20px;
 border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+box-shadow:0 5px 25px rgba(0,0,0,0.08);
 }
 
 input,textarea{
@@ -42,166 +45,142 @@ width:100%;
 padding:12px;
 border-radius:8px;
 border:1px solid #ccc;
-margin:10px 0;
-font-size:16px;
+margin-top:10px;
 }
 
 button{
-background:#2563eb;
+background:#2f63ff;
 color:white;
 border:none;
 padding:12px 20px;
 border-radius:8px;
+margin-top:10px;
 cursor:pointer;
-font-size:16px;
+}
+
+button:hover{
+background:#1e47d6;
 }
 
 .result{
-margin-top:15px;
-background:#eef2f7;
+background:#eef1f7;
 padding:15px;
 border-radius:8px;
+margin-top:15px;
 white-space:pre-line;
-min-height:50px;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
-
 <h1>DZStudy AI</h1>
 <p>مساعدة الطلبة الجزائريين بالذكاء الاصطناعي</p>
-
 </header>
 
 <div class="container">
 
 <div class="card">
-
 <h2>إنشاء بحث</h2>
-
-<input id="topic" placeholder="اكتب موضوع البحث">
-
+<input id="researchTopic" placeholder="اكتب موضوع البحث">
 <button onclick="generateResearch()">إنشاء البحث</button>
-
 <div id="researchResult" class="result"></div>
-
 </div>
 
-
 <div class="card">
-
 <h2>تلخيص النصوص</h2>
-
-<textarea id="text" rows="5" placeholder="ضع النص هنا"></textarea>
-
+<textarea id="summaryText" rows="4" placeholder="ضع النص هنا"></textarea>
 <button onclick="summarizeText()">تلخيص</button>
-
 <div id="summaryResult" class="result"></div>
-
 </div>
-
 
 <div class="card">
-
 <h2>حل سؤال</h2>
-
-<textarea id="question" rows="4" placeholder="اكتب السؤال"></textarea>
-
+<input id="questionInput" placeholder="اكتب السؤال">
 <button onclick="solveQuestion()">حل السؤال</button>
-
 <div id="answerResult" class="result"></div>
-
 </div>
 
 </div>
-
 
 <script>
 
-const API_URL="https://api-inference.huggingface.co/models/google/flan-t5-large";
-
-const API_TOKEN="hI_PPmXjzmkhzCGAgbyzzSBAKLoReRAEIzpPc";
-
+const API_KEY="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";
 
 async function askAI(prompt){
 
-const response=await fetch(API_URL,{
+const response=await fetch("https://openrouter.ai/api/v1/chat/completions",{
 
 method:"POST",
 
 headers:{
-"Authorization":"Bearer "+API_TOKEN,
+"Authorization":"Bearer "+API_KEY,
 "Content-Type":"application/json"
 },
 
 body:JSON.stringify({
-inputs:prompt
-})
 
-})
+model:"meta-llama/llama-3-8b-instruct",
 
-const data=await response.json()
-
-return data[0].generated_text
-
+messages:[
+{
+role:"user",
+content:prompt
 }
 
+]
 
+})
+
+});
+
+const data=await response.json();
+
+return data.choices[0].message.content;
+
+}
 
 async function generateResearch(){
 
-let topic=document.getElementById("topic").value
+let topic=document.getElementById("researchTopic").value;
 
-let result=document.getElementById("researchResult")
+document.getElementById("researchResult").innerText="جاري إنشاء البحث...";
 
-result.innerText="جاري إنشاء البحث..."
+let prompt="اكتب بحثا مدرسيا منظما بمقدمة وعرض وخاتمة حول: "+topic;
 
-let prompt="اكتب بحثا كاملا مع مقدمة وعرض وخاتمة عن "+topic
+let result=await askAI(prompt);
 
-let ai=await askAI(prompt)
-
-result.innerText=ai
+document.getElementById("researchResult").innerText=result;
 
 }
-
-
 
 async function summarizeText(){
 
-let text=document.getElementById("text").value
+let text=document.getElementById("summaryText").value;
 
-let result=document.getElementById("summaryResult")
+document.getElementById("summaryResult").innerText="جاري التلخيص...";
 
-result.innerText="جاري التلخيص..."
+let prompt="لخص النص التالي:\n"+text;
 
-let prompt="لخص النص التالي: "+text
+let result=await askAI(prompt);
 
-let ai=await askAI(prompt)
-
-result.innerText=ai
+document.getElementById("summaryResult").innerText=result;
 
 }
 
-
-
 async function solveQuestion(){
 
-let question=document.getElementById("question").value
+let question=document.getElementById("questionInput").value;
 
-let result=document.getElementById("answerResult")
+document.getElementById("answerResult").innerText="جاري الحل...";
 
-result.innerText="جاري الحل..."
+let prompt="أجب عن السؤال التالي للطلاب:\n"+question;
 
-let prompt="حل السؤال التالي واشرحه: "+question
+let result=await askAI(prompt);
 
-let ai=await askAI(prompt)
-
-result.innerText=ai
+document.getElementById("answerResult").innerText=result;
 
 }
 
