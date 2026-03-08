@@ -8,13 +8,19 @@
 
 <body>
 
+<div class="container">
+
 <h2>إنشاء بحث مدرسي</h2>
 
-<input id="question" placeholder="اكتب موضوع البحث">
+<input id="researchInput" placeholder="موضوع البحث">
 
-<button onclick="askAI()">إنشاء البحث</button>
+<button onclick="createResearch()">إنشاء</button>
 
-<p id="answer"></p>
+<div id="researchResult" class="result"></div>
+
+<a class="back" href="index.html">⬅ العودة</a>
+
+</div>
 
 <script src="script.js"></script>
 
