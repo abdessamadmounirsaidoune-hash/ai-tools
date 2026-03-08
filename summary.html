@@ -2,19 +2,25 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>تلخيص الدروس</title>
+<title>تلخيص</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<div class="container">
+
 <h2>تلخيص النص</h2>
 
-<input id="question" placeholder="الصق النص هنا">
+<textarea id="summaryInput" placeholder="ضع النص هنا"></textarea>
 
-<button onclick="askAI()">تلخيص</button>
+<button onclick="summarize()">تلخيص</button>
 
-<p id="answer"></p>
+<div id="summaryResult" class="result"></div>
+
+<a class="back" href="index.html">⬅ العودة</a>
+
+</div>
 
 <script src="script.js"></script>
 
