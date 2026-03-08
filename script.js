@@ -1,8 +1,10 @@
 const API_URL = "https://idoune.workers.dev/";
 
-async function askAI(question, resultElement) {
+async function askAI(question, resultId) {
 
-resultElement.innerText = "جاري التفكير...";
+const result = document.getElementById(resultId);
+
+result.innerText = "جاري التفكير...";
 
 try {
 
@@ -19,13 +21,15 @@ message: question
 const data = await response.json();
 
 if(data.answer){
-resultElement.innerText = data.answer;
+result.innerText = data.answer;
 }else{
-resultElement.innerText = "لم يتم العثور على جواب";
+result.innerText = "لم يتم العثور على جواب";
 }
 
 } catch (error) {
-resultElement.innerText = "حدث خطأ في الاتصال";
+
+result.innerText = "حدث خطأ في الاتصال";
+
 }
 
 }
