@@ -8,13 +8,19 @@
 
 <body>
 
+<div class="container">
+
 <h2>شرح أي درس</h2>
 
-<input id="question" placeholder="اكتب اسم الدرس">
+<input id="lessonInput" placeholder="اكتب اسم الدرس">
 
-<button onclick="askAI()">شرح</button>
+<button onclick="explainLesson()">شرح</button>
 
-<p id="answer"></p>
+<div id="lessonResult" class="result"></div>
+
+<a class="back" href="index.html">⬅ العودة</a>
+
+</div>
 
 <script src="script.js"></script>
 
