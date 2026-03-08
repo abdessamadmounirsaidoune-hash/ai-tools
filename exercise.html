@@ -8,13 +8,19 @@
 
 <body>
 
-<h2>حل التمارين</h2>
+<div class="container">
 
-<input id="question" placeholder="اكتب التمرين">
+<h2>حل تمرين</h2>
 
-<button onclick="askAI()">حل</button>
+<textarea id="exerciseInput" placeholder="اكتب التمرين"></textarea>
 
-<p id="answer"></p>
+<button onclick="solveExercise()">حل</button>
+
+<div id="exerciseResult" class="result"></div>
+
+<a class="back" href="index.html">⬅ العودة</a>
+
+</div>
 
 <script src="script.js"></script>
 
