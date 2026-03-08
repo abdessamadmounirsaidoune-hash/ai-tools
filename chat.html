@@ -8,13 +8,18 @@
 
 <body>
 
+<div class="container">
+
 <h2>الدردشة مع الذكاء الاصطناعي</h2>
 
-<div id="chat"></div>
+<input id="chatInput" placeholder="اكتب سؤالك">
 
-<div class="chat-box">
-<input id="question" placeholder="اكتب سؤالك">
-<button onclick="askAI()">إرسال</button>
+<button onclick="sendChat()">اسأل</button>
+
+<div id="chatResult" class="result"></div>
+
+<a class="back" href="index.html">⬅ العودة للرئيسية</a>
+
 </div>
 
 <script src="script.js"></script>
